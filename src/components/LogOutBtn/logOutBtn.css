@@ -1,0 +1,19 @@
+.logout-btn {
+    font-family: inherit;
+    background: none;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border: 1px solid var(--logout_btn_border);
+    border-radius: 6px;
+    color: var(--logout_btn_text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.logout-btn:hover {
+    background: var(--logout_btn_bg);
+}

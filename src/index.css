@@ -33,6 +33,7 @@
   --font_color_light_black: #4D4D4D;
   --font_color_gray: #646D7D;
   --font_color_active: #67EB73;
+  --font_color_darker_whitesmoke: #EFEFEF;
 
 
   /* Input Colors */
@@ -44,7 +45,16 @@
   --input_background_color_invalid: rgb(200, 26, 26, 0.12);
 
 
+  /* adminSidebar Colors */
+  --admin_sidebar_background_active_color: #DFF0E1;
+  --admin_sidebar_font_active_color: #4CA755;
 
+
+
+  /* Log out Btn Colors */
+  --logout_btn_border: #DBDBDB;
+  --logout_btn_bg: #EAEAEA;
+  --logout_btn_text: #2B2B2B;
 }
 
 h1,
@@ -54,5 +64,14 @@ h4,
 h5,
 h6,
 p {
+  margin: 0;
+}
+
+a {
+  all: unset;
+  cursor: pointer;
+}
+
+body {
   margin: 0;
 }

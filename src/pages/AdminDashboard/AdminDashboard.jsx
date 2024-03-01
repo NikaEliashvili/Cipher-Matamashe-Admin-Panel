@@ -1,21 +1,13 @@
 import React from "react";
-import Button from "../Button/Button";
-import { useDispatch } from "react-redux";
-import { setIsLogged } from "../../redux/slice";
 import { Link } from "react-router-dom";
+import Button from "../../components/Button/Button";
+import LogOutBtn from "../../components/LogOutBtn/LogOutBtn";
 
 export default function AdminDashboard() {
-  const dispatch = useDispatch();
-  function signOut() {
-    dispatch(setIsLogged(false));
-    localStorage.removeItem("isLoggedIn");
-  }
   return (
     <div>
-      <h1>Admin Dashboard</h1>
-      <Button onClick={signOut}>გასვლა</Button>
-      <br />
-      <br />
+      <h4>Admin Dashboard</h4>
+      <LogOutBtn />
       <br />
       <br />
       <Link to="./upload">

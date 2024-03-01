@@ -7,7 +7,7 @@ export default function AuthRequired() {
   if (!loggedIn) {
     return (
       <Navigate
-        to="/admin/login"
+        to="/login"
         state={{
           message: "You must log in first !",
           prevLoc: location.pathname,

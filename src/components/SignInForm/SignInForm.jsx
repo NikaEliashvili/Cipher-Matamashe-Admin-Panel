@@ -5,6 +5,7 @@ import Input from "../Input/Input";
 import Button from "../Button/Button";
 import { useDispatch } from "react-redux";
 import { setIsLogged } from "../../redux/slice";
+import logInService from "../../services/logInService";
 
 export default function SignInForm() {
   const dispatch = useDispatch();
@@ -31,12 +32,19 @@ export default function SignInForm() {
     setInputType(eyeIcon == eyeClosedIcon ? "text" : "password");
   }
 
-  function submit(e) {
+  async function submit(e) {
     e.preventDefault();
     localStorage.setItem("isLoggedIn", "true");
     dispatch(setIsLogged(true));
-    navigate("/admin");
+    navigate("/");
     /* Implement Api Request Here */
+
+    const response = await logInService(
+      signInForm.login,
+      signInForm.password
+    );
+
+    console.log({ response });
   }
 
   return (
@@ -47,7 +55,7 @@ export default function SignInForm() {
       </div>
       <form onSubmit={submit} className="form">
         <Input
-          type="email"
+          type="text"
           label="ლოგინი"
           icon={userIcon}
           value={signInForm.login}

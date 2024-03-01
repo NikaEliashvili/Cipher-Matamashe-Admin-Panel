@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   BrowserRouter,
   Routes,
@@ -12,9 +12,9 @@ import "./App.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsLogged } from "./redux/slice";
 import ErrorPage from "./pages/ErrorPage/ErrorPage";
-import AdminDashboard from "./components/AdminDashboard/AdminDashboard";
 import AuthRequired from "./components/AuthRequired/AuthRequired";
 import UploadProducts from "./pages/UploadProducts/UploadProducts";
+import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
 
 function App() {
   const dispatch = useDispatch();
@@ -23,8 +23,6 @@ function App() {
     if (JSON.parse(localStorage.getItem("isLoggedIn")) === true) {
       dispatch(setIsLogged(true));
     }
-
-    console.log(isLogged);
   }, [isLogged]);
 
   return (
@@ -32,19 +30,18 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route
-            path="/admin/login"
+            path="/login"
             element={
-              !isLogged ? (
-                <LoginPage />
-              ) : (
-                <Navigate to={"/admin/dashboard"} />
-              )
+              !isLogged ? <LoginPage /> : <Navigate to={"/"} />
             }
           />
           <Route element={<AuthRequired />}>
-            <Route path="/admin" element={<Layout />}>
+            <Route path="/" element={<Layout />}>
               <Route index element={<AdminDashboard />} />
               <Route path="upload" element={<UploadProducts />} />
+              <Route path="analytics" element={<UploadProducts />} />
+              <Route path="messages" element={<UploadProducts />} />
+              <Route path="accounts" element={<UploadProducts />} />
             </Route>
           </Route>
           <Route path="*" element={<ErrorPage />} />
