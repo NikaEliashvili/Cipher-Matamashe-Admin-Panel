@@ -1,0 +1,87 @@
+.input-field {
+    position: relative;
+    width: 400px;
+    height: 58px;
+}
+
+
+label {
+    position: absolute;
+    inset: 0;
+    width: fit-content;
+    height: fit-content;
+    margin: auto 1.25rem;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: text;
+    transition: 0.2s all;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+input {
+    outline: none;
+    border: none;
+    width: 100%;
+    height: 100%;
+    background: none;
+    padding-inline: 1.25rem;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--input_font_color);
+    border: 1px solid var(--input_border_color_gray);
+    border-radius: 6px;
+}
+
+input:focus~label,
+input:valid~label {
+    bottom: 100%;
+    margin-left: 1.5rem;
+    font-size: 0.875rem;
+}
+
+.label-bg {
+    position: absolute;
+    inset: 0;
+    bottom: 100%;
+    margin: auto 0.875rem;
+    background-color: var(--background_color_2);
+    width: 84px;
+    height: 0;
+
+}
+
+input:focus~.label-bg,
+input:valid~.label-bg {
+    height: 2px;
+    transition: all 0.2s;
+}
+
+
+input:valid {
+    background: var(--input_background_color_valid);
+    border-color: var(--input_border_color_valid);
+}
+
+input:focus:invalid {
+    background: var(--input_background_color_invalid);
+    border-color: var(--input_border_color_invalid);
+}
+
+
+.icon {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 1.458rem;
+
+    margin: auto;
+    width: fit-content;
+    height: fit-content;
+
+}
+
+.icon.pointer {
+    cursor: pointer;
+}

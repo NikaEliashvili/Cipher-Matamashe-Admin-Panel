@@ -1,0 +1,58 @@
+@import url('./assets/fonts/fonts.css');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+
+:root {
+  font-family: Mersad, sans-serif;
+
+  color: var(--font_color_black);
+  background-color: #EDF4FF;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+
+
+  /*----- COLORS -------*/
+  --background_color_main: #EDF4FF;
+  --background_color_2: #FFFFFF;
+  --background_color_active: #67EB73;
+  --background_color_active_hover: #93FF9C;
+
+
+  --font_color_black: #000000;
+  --font_color_dark_blue_2: #03070E;
+  --font_color_dark_blue: #20212C;
+  --font_color_light_black: #4D4D4D;
+  --font_color_gray: #646D7D;
+  --font_color_active: #67EB73;
+
+
+  /* Input Colors */
+  --input_font_color: #151515;
+  --input_border_color_gray: #BBC0C9;
+  --input_border_color_valid: #67EB73;
+  --input_background_color_valid: rgba(103, 235, 115, 0.12);
+  --input_border_color_invalid: #C81A1A;
+  --input_background_color_invalid: rgb(200, 26, 26, 0.12);
+
+
+
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}

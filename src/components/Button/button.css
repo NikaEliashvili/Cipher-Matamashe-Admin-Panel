@@ -1,0 +1,17 @@
+.subsc-btn {
+    border: none;
+    border-radius: 0.5rem;
+    width: fit-content;
+    padding: 0.875rem 2rem;
+    background-color: var(--background_color_active);
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--font_color_dark_blue_2);
+    cursor: pointer;
+    transition: 0.2s linear;
+}
+
+.subsc-btn:hover {
+    background-color: var(--background_color_active_hover);
+}
