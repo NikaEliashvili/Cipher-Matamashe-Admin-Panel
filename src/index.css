@@ -38,6 +38,7 @@
 
   /* Input Colors */
   --input_font_color: #151515;
+  --input_font_color_error: var(--input_border_color_invalid);
   --input_border_color_gray: #BBC0C9;
   --input_border_color_valid: #67EB73;
   --input_background_color_valid: rgba(103, 235, 115, 0.12);

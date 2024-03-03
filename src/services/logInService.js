@@ -1,19 +1,23 @@
-// services/logInService.js
 import axios from "axios";
+import { setNewJWT } from "../redux/authSlice";
 
 const API_URL = "https://api.matamashe.ge/adminSignin.php";
 
-const API_URL_CHECK = "https://api.matamashe.ge/adminCheck.php";
-
-export default async function logInService(username, password) {
+const logInService = async (username, password, dispatch) => {
   const formData = new FormData();
   formData.append("username", username);
   formData.append("password", password);
+
   try {
     const response = await axios.post(API_URL, formData);
-    localStorage.setItem("jwt", response.data.token);
-    return response.data;
+    const newToken = response.data.token;
+
+    // Dispatch the action directly.
+    dispatch(setNewJWT(newToken));
+    return newToken;
   } catch (error) {
-    return error;
+    throw error.response;
   }
-}
+};
+
+export default logInService;

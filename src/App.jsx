@@ -4,38 +4,33 @@ import {
   Routes,
   Route,
   Navigate,
+  useNavigate,
 } from "react-router-dom";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import Layout from "./components/Layout/Layout";
 
 import "./App.css";
-import { useDispatch, useSelector } from "react-redux";
-import { setIsLogged } from "./redux/slice";
+import { useSelector } from "react-redux";
 import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import AuthRequired from "./components/AuthRequired/AuthRequired";
 import UploadProducts from "./pages/UploadProducts/UploadProducts";
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
+import { authToken } from "./redux/authSlice";
 
 function App() {
-  const dispatch = useDispatch();
-  const isLogged = useSelector((state) => state.isLogged?.value);
-  useEffect(() => {
-    if (JSON.parse(localStorage.getItem("isLoggedIn")) === true) {
-      dispatch(setIsLogged(true));
-    }
-  }, [isLogged]);
+  const isLogged = useSelector(authToken);
 
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route
-            path="/login"
-            element={
-              !isLogged ? <LoginPage /> : <Navigate to={"/"} />
-            }
-          />
           <Route element={<AuthRequired />}>
+            <Route
+              path="/login"
+              element={
+                !isLogged ? <LoginPage /> : <Navigate to={"/"} />
+              }
+            />
             <Route path="/" element={<Layout />}>
               <Route index element={<AdminDashboard />} />
               <Route path="upload" element={<UploadProducts />} />

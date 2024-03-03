@@ -3,18 +3,19 @@ import { useNavigate } from "react-router-dom";
 import "./signInForm.css";
 import Input from "../Input/Input";
 import Button from "../Button/Button";
-import { useDispatch } from "react-redux";
-import { setIsLogged } from "../../redux/slice";
 import logInService from "../../services/logInService";
+import { useDispatch } from "react-redux";
+import useSignIn from "../../hooks/useSignIn";
 
 export default function SignInForm() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [inputType, setInputType] = useState("password");
   const [eyeIcon, setEyeIcon] = useState("/icons/eye-closed.svg");
   const userIcon = "/icons/user.svg";
   const eyeClosedIcon = "/icons/eye-closed.svg";
   const eyeOpenedIcon = "/icons/eye-opened.svg";
+  const [handleSignIn, isLoading, error] = useSignIn();
   const [signInForm, setSignInForm] = useState({
     login: "",
     password: "",
@@ -34,17 +35,7 @@ export default function SignInForm() {
 
   async function submit(e) {
     e.preventDefault();
-    localStorage.setItem("isLoggedIn", "true");
-    dispatch(setIsLogged(true));
-    navigate("/");
-    /* Implement Api Request Here */
-
-    const response = await logInService(
-      signInForm.login,
-      signInForm.password
-    );
-
-    console.log({ response });
+    handleSignIn(signInForm.login, signInForm.password);
   }
 
   return (
@@ -55,6 +46,9 @@ export default function SignInForm() {
       </div>
       <form onSubmit={submit} className="form">
         <Input
+          errorMessage={
+            error && error.status === 404 && error.message
+          }
           type="text"
           label="ლოგინი"
           icon={userIcon}
@@ -63,6 +57,9 @@ export default function SignInForm() {
           onChange={handleChange}
         />
         <Input
+          errorMessage={
+            error && error.status === 401 && error.message
+          }
           type={inputType}
           label="პაროლი"
           icon={eyeIcon}
@@ -71,7 +68,11 @@ export default function SignInForm() {
           onChange={handleChange}
           showPass={showPass}
         />
-        <Button classNames="margin" type="submit">
+        <Button
+          isLoading={isLoading}
+          classNames="margin"
+          type="submit"
+        >
           გამოწერა
         </Button>
       </form>

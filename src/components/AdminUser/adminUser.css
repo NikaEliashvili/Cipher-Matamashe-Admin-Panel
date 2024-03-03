@@ -1,6 +1,7 @@
 .user-container {
     display: flex;
-    justify-content: center;
+    min-width: 150px;
+    justify-content: flex-end;
     align-items: center;
     gap: 0.75rem;
     padding: 0.5rem 0.75rem;
@@ -56,4 +57,9 @@
     font-weight: 700;
     color: var(--font_color_darker_whitesmoke);
     margin-top: 3px;
+}
+
+
+.user-container .spinner {
+    filter: opacity(0.4);
 }
