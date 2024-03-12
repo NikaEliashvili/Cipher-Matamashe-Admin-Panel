@@ -2,4 +2,15 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    padding-right: 128px;
+    position: relative;
+}
+
+.outlet {
+    position: absolute;
+    inset: 0;
+    margin-left: 252px;
+    width: calc(100% - 252px - 128px);
+    padding-left: 1rem;
+
 }

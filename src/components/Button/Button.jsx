@@ -1,5 +1,5 @@
 import React from "react";
-import { TailSpin, ThreeDots } from "react-loader-spinner";
+import { ThreeDots } from "react-loader-spinner";
 import "./button.css";
 export default function Button({
   classNames,

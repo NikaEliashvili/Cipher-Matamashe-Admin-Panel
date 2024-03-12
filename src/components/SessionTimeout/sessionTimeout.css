@@ -1,0 +1,135 @@
+.session-timeout-background {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.88);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000000;
+    backdrop-filter: blur(0.85px);
+    animation: session-bg-open 0.8s cubic-bezier(0.47, 0, 0.23, 1.38) 1;
+}
+
+.session-timeout-background.close {
+    animation: session-bg-close 0.8s cubic-bezier(0.47, 0, 0.23, 1.38) 1;
+}
+
+.session-timeout {
+    width: fit-content;
+    height: fit-content;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    background: #101010;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(0, 0, 0, 0.11);
+    box-shadow: 0 0.875rem 24.7px rgba(0, 0, 0, 0.05);
+    animation: session-message-open 0.8s cubic-bezier(0.47, 0, 0.23, 1.38) 1;
+}
+
+.session-timeout.close {
+    animation: session-message-close 0.8s cubic-bezier(0.47, 0, 0.23, 1.38) 1;
+}
+
+.session-timeout .devision-line {
+    width: calc(100% + 4rem);
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.session-header {
+    color: white;
+    font-weight: 900;
+    text-align: left;
+    width: 100%;
+}
+
+.session-header h6 {
+    font-size: 1.375rem;
+}
+
+.session-info-text {
+    max-width: 475px;
+    font-size: 1rem !important;
+    font-weight: 200;
+    color: rgba(255, 255, 255, 0.83);
+    line-height: 21px;
+}
+
+.session-info-text .time {
+    font-weight: 400;
+    color: #EBA767;
+    text-decoration: underline;
+}
+
+.log-out-btn,
+.stay-in-btn {
+    padding: 0.75rem 2.75rem !important;
+    font-weight: 500 !important;
+    font-size: 1rem !important;
+}
+
+.log-out-btn {
+    background-color: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.83);
+}
+
+.log-out-btn:hover {
+    background-color: rgba(255, 255, 255, 0.4) !important;
+
+}
+
+.stay-in-btn {
+    color: #202020;
+}
+
+.session-timeout .buttons {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.75rem;
+}
+
+
+@keyframes session-message-open {
+    from {
+        margin-bottom: 110%;
+    }
+
+}
+
+@keyframes session-message-close {
+    to {
+        margin-bottom: 110%;
+    }
+
+}
+
+
+@keyframes session-bg-open {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+@keyframes session-bg-close {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}

@@ -1,0 +1,70 @@
+/* table.css */
+
+/* Style the container of the table */
+.table-container {
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+/* Style the table */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+
+/* Style the table header */
+.table thead th {
+    font-size: 0.75rem;
+    font-weight: 400;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 0.75rem;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    text-align: left;
+    min-width: fit-content;
+    text-wrap: nowrap;
+
+}
+
+
+
+/* Style the table body */
+.table tbody td {
+    padding: 8px 2rem 0.5rem 1rem;
+}
+
+
+.table tbody tr:nth-child(odd) {
+    background-color: rgba(0, 0, 0, 0.04);
+}
+
+
+
+
+
+/* Style the scrollbar */
+.table-container::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    border-radius: 4rem;
+
+}
+
+/* Track */
+.table-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 4rem;
+}
+
+/* Handle */
+.table-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 1rem;
+    transition: all 0.3s ease-out;
+}
+
+/* Handle on hover */
+.table-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

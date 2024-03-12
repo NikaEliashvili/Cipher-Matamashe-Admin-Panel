@@ -1,10 +1,8 @@
-import { useEffect } from "react";
 import {
   BrowserRouter,
   Routes,
   Route,
   Navigate,
-  useNavigate,
 } from "react-router-dom";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import Layout from "./components/Layout/Layout";
@@ -14,8 +12,8 @@ import { useSelector } from "react-redux";
 import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import AuthRequired from "./components/AuthRequired/AuthRequired";
 import UploadProducts from "./pages/UploadProducts/UploadProducts";
-import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
 import { authToken } from "./redux/authSlice";
+import Products from "./pages/Products/Products";
 
 function App() {
   const isLogged = useSelector(authToken);
@@ -32,7 +30,7 @@ function App() {
               }
             />
             <Route path="/" element={<Layout />}>
-              <Route index element={<AdminDashboard />} />
+              <Route index element={<Products />} />
               <Route path="upload" element={<UploadProducts />} />
               <Route path="analytics" element={<UploadProducts />} />
               <Route path="messages" element={<UploadProducts />} />

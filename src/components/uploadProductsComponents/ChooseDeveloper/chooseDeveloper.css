@@ -1,0 +1,18 @@
+.choose-developer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    height: fit-content;
+    margin-bottom: 4rem;
+}
+
+
+.select-developer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 336px;
+}

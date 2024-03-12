@@ -1,0 +1,23 @@
+.page-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    margin-right: auto;
+    margin-bottom: 4rem;
+}
+
+
+.titles .header-title {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--font_color_dark_blue_2);
+}
+
+.titles .header-subtitle {
+    font-weight: 400;
+    font-size: 0.75rem;
+    color: var(--font_color_light_black_2);
+}

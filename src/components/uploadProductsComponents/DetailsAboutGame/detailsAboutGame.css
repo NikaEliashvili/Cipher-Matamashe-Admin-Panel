@@ -1,0 +1,50 @@
+.details-main-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 4rem;
+}
+
+.detail-fields-container {
+    width: 100%;
+}
+
+.detail-fields-container .input-fields {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1rem 1rem 1.5rem;
+    background-color: #FBFBFB;
+    border-radius: 0.325rem;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+
+.input-fields .product-name {
+    width: 100%;
+    flex-grow: 1;
+}
+
+
+.input-fields .languages {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.input-fields .language-field {
+    width: 336px;
+}
+
+.description {
+    width: 100%;
+    flex-grow: 1;
+}

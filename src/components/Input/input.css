@@ -12,7 +12,7 @@
 }
 
 
-label {
+.input-component label {
     position: absolute;
     inset: 0;
     width: fit-content;
@@ -26,7 +26,7 @@ label {
     font-size: 1rem;
 }
 
-input {
+.input-component input {
     outline: none;
     border: none;
     width: 100%;
@@ -41,14 +41,14 @@ input {
     border-radius: 6px;
 }
 
-input:focus~label,
-input:valid~label {
+.input-component input:focus~label,
+.input-component input:valid~label {
     bottom: 100%;
     margin-left: 1.5rem;
     font-size: 0.875rem;
 }
 
-.label-bg {
+.input-component .label-bg {
     position: absolute;
     inset: 0;
     bottom: 100%;
@@ -59,25 +59,25 @@ input:valid~label {
 
 }
 
-input:focus~.label-bg,
-input:valid~.label-bg {
+.input-component input:focus~.label-bg,
+.input-component input:valid~.label-bg {
     height: 2px;
     transition: all 0.2s;
 }
 
 
-input:valid {
+.input-component input:valid {
     background: var(--input_background_color_valid);
     border-color: var(--input_border_color_valid);
 }
 
-input.on-error {
+.input-component input.on-error {
     background: var(--input_background_color_invalid);
     border-color: var(--input_border_color_invalid);
 }
 
 
-.icon {
+.input-component .icon {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -89,12 +89,12 @@ input.on-error {
 
 }
 
-.icon.pointer {
+.input-component .icon.pointer {
     cursor: pointer;
 }
 
 
-.error-msg {
+.input-component .error-msg {
     margin-top: 4px;
     font-weight: 300;
     font-size: 0.625rem;

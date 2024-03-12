@@ -4,12 +4,16 @@ import AdminSideBar from "../AdminSideBar/AdminSideBar";
 
 import "./layout.css";
 import AdminUser from "../AdminUser/AdminUser";
+import SessionTimeout from "../SessionTimeout/SessionTimeout";
 
 function Layout() {
   return (
     <div className="layout">
       <AdminSideBar />
-      <Outlet />
+      <SessionTimeout />
+      <div className="outlet">
+        <Outlet />
+      </div>
       <AdminUser />
     </div>
   );

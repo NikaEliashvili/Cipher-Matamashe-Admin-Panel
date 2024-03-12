@@ -1,0 +1,13 @@
+.upload-page {
+    max-width: 856px;
+    margin: 7rem 2rem 11.25rem;
+    width: 100%;
+    height: auto;
+    min-height: 200px;
+    background-color: var(--background_color_2);
+    border-radius: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    transition: height 2.3s ease-in-out;
+}

@@ -6,11 +6,8 @@ import { authToken } from "../../redux/authSlice";
 import useSignOut from "../../hooks/useSignOut";
 export default function LogOutBtn({ classNames }) {
   const [handleSignOut, isLoading, error] = useSignOut();
-  // const jwt = useSelector(authToken);
-  // const dispatch = useDispatch();
   async function signOutBtn() {
     handleSignOut();
-    // await signOut(jwt, dispatch);
   }
   return (
     <button

@@ -1,0 +1,221 @@
+.select-field {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 3px;
+}
+
+.custom-select {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-select-label {
+    font-weight: 200;
+    font-size: 0.75rem;
+    color: #101010;
+}
+
+
+.select-header {
+    height: 36px;
+    display: flex;
+    align-items: center;
+    padding-inline: 12px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ECECEC;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: #545454;
+    transition: background-color 0.3s ease-out;
+}
+
+
+.select-header:hover {
+    background-color: #DCDCDC;
+}
+
+.select-header.open {
+    background-color: #2C2C2C;
+    color: #E6E6E6;
+}
+
+.selected-option {
+    flex-grow: 1;
+    padding-top: 4px;
+    padding-right: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.select-arrow {
+    width: 5px;
+    height: 5px;
+    border-left: 1px solid #545454;
+    border-bottom: 1px solid #545454;
+    transition: all 0.3s ease-out;
+}
+
+.select-arrow.closed {
+    transform: rotate(-45deg);
+}
+
+.select-arrow.open {
+    border-color: #E6E6E6;
+    transform: rotate(135deg);
+}
+
+.options-container {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    width: 100%;
+    background-color: #ECECEC;
+    border-radius: 0.375rem;
+    padding: 0 0 0.5rem;
+    overflow: hidden;
+    max-height: 200px;
+    overflow-y: auto;
+    transition: all 0.3s ease-out;
+    scroll-behavior: smooth;
+    z-index: +1;
+}
+
+
+.search-field {
+
+    position: sticky;
+    top: 0;
+    width: 100%;
+    padding: 0 0 0 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #DCDCDC;
+    gap: 0.5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    z-index: 1;
+}
+
+
+.search-input {
+    font-family: inherit;
+    font-weight: 200;
+    font-size: 0.625rem;
+    color: #616161;
+    border: none;
+    background: none;
+    width: 100%;
+    margin-top: 2px;
+    padding: 0.5rem 0;
+}
+
+.search-input:focus {
+    outline: none;
+}
+
+.option {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0 0.8rem;
+    font-size: 0.75rem;
+    font-weight: 200;
+    padding: 0.5rem 0.75rem;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-out;
+}
+
+.option:hover {
+    background-color: #D4D4D4;
+}
+
+
+.checkbox-icon {
+    width: fit-content;
+    height: fit-content;
+    min-width: 15px;
+    min-height: 15px;
+    border: 2px solid #3a3b41;
+    font-size: 12px;
+    border-radius: 2px;
+}
+
+.checkbox-icon .icon {
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease-out;
+}
+
+.checkbox-icon .checked {
+    background-color: #3a3b41;
+    filter: opacity(1);
+}
+
+.checkbox-icon.anim .checked svg {
+    animation: checkbox-check 0.3s ease-out 1;
+}
+
+.checkbox-icon.anim .unchecked svg {
+    animation: checkbox-uncheck 0.4s ease-out 1;
+}
+
+.checkbox-icon .unchecked {
+    background-color: transparent;
+    filter: opacity(0);
+    transition-delay: 0.23s;
+}
+
+@keyframes checkbox-check {
+    from {
+        opacity: 0;
+        transform: scale(0) rotate(-90deg);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+@keyframes checkbox-uncheck {
+    from {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(0) rotate(-90deg);
+    }
+
+}
+
+
+/* Adjust scrollbar width as needed */
+.options-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+/* Color of the scrollbar track */
+.options-container::-webkit-scrollbar-track {
+    background: #ECECEC;
+}
+
+.options-container::-webkit-scrollbar-thumb {
+    /* Color of the scrollbar thumb */
+    background: #a5a5a5;
+    border-radius: 5px;
+}

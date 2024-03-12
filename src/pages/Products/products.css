@@ -1,0 +1,12 @@
+.products-page {
+    width: 100%;
+    margin: 2.5rem 0 3rem;
+    overflow: hidden;
+}
+
+.products-table {
+    max-width: 100% !important;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
