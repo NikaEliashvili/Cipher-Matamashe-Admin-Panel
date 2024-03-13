@@ -15,7 +15,7 @@ const ButtonsContainer = () => {
     dispatch(resetForm());
   };
 
-  if (!formData.tags.length) {
+  if (formData.chooseCategory.length === 0) {
     return null;
   }
 
@@ -24,9 +24,11 @@ const ButtonsContainer = () => {
       <Button classNames={"cancel-btn"} onClick={cancelForm}>
         გაუქმება
       </Button>
-      <Button classNames={"submit-btn"} type={"submit"}>
-        ატვირთვა
-      </Button>
+      {formData.tags.length ? (
+        <Button classNames={"submit-btn"} type={"submit"}>
+          ატვირთვა
+        </Button>
+      ) : null}
     </div>
   );
 };

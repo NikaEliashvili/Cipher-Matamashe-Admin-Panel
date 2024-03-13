@@ -33,7 +33,6 @@ const ChooseAvailability = () => {
           value: null,
         })
       );
-      setChecked(null);
     }
   }, [formData.chooseGenre, formData.chooseGenre, dispatch]);
 

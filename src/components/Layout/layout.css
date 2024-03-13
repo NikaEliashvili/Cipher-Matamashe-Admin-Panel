@@ -12,5 +12,8 @@
     margin-left: 252px;
     width: calc(100% - 252px - 128px);
     padding-left: 1rem;
-
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    height: fit-content;
 }

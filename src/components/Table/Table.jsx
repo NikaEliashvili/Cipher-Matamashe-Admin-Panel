@@ -21,12 +21,14 @@ const Table = ({ columns, dataSource, scrollableX, scrollableY }) => {
         <tbody>
           {dataSource?.map((row, rowIndex) => (
             <tr key={rowIndex} className="table-row">
-              {columns.map((column) => (
+              {columns.map((column, index) => (
                 <td
                   key={`${rowIndex}-${column.key}`}
                   className="table-cell"
                 >
-                  {row[column.dataIndex]}
+                  <div className="table-cell-content">
+                    {row[column.dataIndex] || null}
+                  </div>
                 </td>
               ))}
             </tr>

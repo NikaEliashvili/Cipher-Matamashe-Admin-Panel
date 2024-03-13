@@ -10,3 +10,192 @@
     align-items: center;
     justify-content: flex-start;
 }
+
+
+/* .products-table .table  */
+
+
+.products-table .table .table-cell-content .game-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 31px;
+    height: 44px;
+    background-image: url('/icons/image-icon.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: rgba(0, 0, 0, 0.08);
+    border-radius: 2px;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.14);
+    overflow: hidden;
+}
+
+
+
+.products-table .table .table-cell-content img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+
+.products-table .table .PS5 {
+    background-color: white;
+    color: #131721;
+}
+
+.products-table .table .PS4 {
+
+    background-color: #1355E1;
+    color: #E4E4E4;
+}
+
+.products-table .table .discount,
+.products-table .table .availablity,
+.products-table .table .PS5,
+.products-table .table .PS4 {
+    font-family: inherit;
+    padding: 9px 18px 7px;
+    border-radius: 58px;
+    font-weight: 400;
+    font-size: 0.75rem;
+    text-wrap: nowrap;
+    text-align: center;
+}
+
+.products-table .table .availablity {
+    background-color: #D9DCFF;
+    color: #6557FF;
+}
+
+.products-table .table .discount,
+.products-table .table .profit,
+.products-table .table .price {
+    font-size: 0.75rem;
+    font-weight: 400;
+}
+
+.products-table .table .price {
+    color: #2C313C;
+}
+
+.products-table .table .profit {
+    color: #24962E;
+}
+
+.products-table .table .discount {
+    color: #ED2929;
+    padding: 7px 18px 5px;
+    background-color: #EEDFEA;
+}
+
+.products-table .table .small-text {
+    font-size: 0.625rem;
+    font-weight: 300;
+    color: #131721;
+}
+
+.products-table .table .medium-text {
+    color: #2C313C;
+    font-weight: 500;
+    font-size: 0.75rem;
+}
+
+.products-table .table .big-text {
+    color: #131721;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.products-table .table .width-140 {
+    width: 140px;
+}
+
+.products-table .table .width-140,
+.products-table .table .width-100 {
+    max-height: 56px;
+    padding-right: 0.8rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-wrap: wrap;
+    overflow-y: auto;
+}
+
+.products-table .table .width-100 {
+    width: 100px;
+}
+
+.products-table .table .tags {
+    width: 140px;
+    height: 60px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 4px 2px;
+    overflow-y: auto;
+}
+
+.products-table .table .tags .tag {
+    padding: 6px 8px 2px;
+    background-color: rgba(0, 0, 0, 0.06);
+    border-radius: 1.5rem;
+    font-size: 0.625rem;
+    font-weight: 100;
+    color: #383838;
+}
+
+.products-table .table .table-tools {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0.5rem;
+}
+
+.products-table .table .table-tools .table-btn-edit,
+.products-table .table .table-tools .table-btn-delete {
+    border: none;
+    background: none;
+    font-family: inherit;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: #464A54;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 8px 18px 6px;
+    box-shadow: inset 0 0 0 1px #E2E2E2;
+    border-radius: 2.125rem;
+    transition: background-color 0.3s ease-out;
+    cursor: pointer;
+}
+
+.products-table .table .table-tools .table-btn-edit .edit-icon,
+.products-table .table .table-tools .table-btn-delete .trash-icon {
+    margin-bottom: 2px;
+    width: 16px;
+    height: 16px;
+}
+
+.products-table .table .table-tools .table-btn-edit:hover {
+    background-color: #FFFFFF;
+    color: #060A16;
+    box-shadow: none;
+}
+
+.products-table .table .table-tools .table-btn-edit:hover .edit-icon {
+    filter: brightness(0.4);
+}
+
+.products-table .table .table-tools .table-btn-delete:hover {
+    background-color: #EA3838;
+    color: #F4F4F4;
+    box-shadow: none;
+}
+
+.products-table .table .table-tools .table-btn-delete:hover .trash-icon {
+    filter: brightness(30);
+}

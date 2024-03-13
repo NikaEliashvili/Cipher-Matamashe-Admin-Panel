@@ -5,3 +5,39 @@
     margin-left: 1.5px;
 
 }
+
+
+
+
+
+
+
+
+
+
+
+/* Style the scrollbar */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    border-radius: 4rem;
+
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 4rem;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 1rem;
+    transition: all 0.3s ease-out;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

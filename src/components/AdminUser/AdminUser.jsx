@@ -26,9 +26,7 @@ export default function AdminUser() {
             adminUser?.username
           )}
         </h4>
-        <span className="user-email">
-          {adminUser?.email + "sasckjascajbcasbckajscb" || null}
-        </span>
+        <span className="user-email">{adminUser?.email || null}</span>
       </div>
       <div className="user-img-div">
         <img
