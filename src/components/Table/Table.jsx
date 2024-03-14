@@ -19,22 +19,26 @@ const Table = ({ columns, dataSource, scrollableX, scrollableY }) => {
           </tr>
         </thead>
         <tbody>
-          {dataSource?.map((row, rowIndex) => (
-            <tr key={rowIndex} className="table-row">
-              {columns.map((column, index) => (
-                <td
-                  key={`${rowIndex}-${column.key}`}
-                  className="table-cell"
-                >
-                  <div className="table-cell-content">
-                    {row[column.dataIndex] || null}
-                  </div>
-                </td>
-              ))}
-            </tr>
-          ))}
+          {dataSource &&
+            dataSource?.map((row, rowIndex) => (
+              <tr key={rowIndex} className="table-row">
+                {columns.map((column) => (
+                  <td
+                    key={`${rowIndex}-${column.key}`}
+                    className="table-cell"
+                  >
+                    <div className="table-cell-content">
+                      {row[column.dataIndex] || null}
+                    </div>
+                  </td>
+                ))}
+              </tr>
+            ))}
         </tbody>
       </table>
+      {!dataSource && (
+        <div className="no-data">პროდუქტი არაა დამატებული...</div>
+      )}
     </div>
   );
 };

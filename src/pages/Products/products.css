@@ -15,6 +15,25 @@
 /* .products-table .table  */
 
 
+
+.products-table .table .col-title {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.25rem;
+    cursor: pointer;
+}
+
+.products-table .table .col-title .col-title-title {
+    font-weight: 400;
+    font-size: 0.75rem;
+}
+
+.products-table .table .col-title .col-title-icon {
+    width: 8px;
+    margin-bottom: 2px;
+}
+
 .products-table .table .table-cell-content .game-image {
     display: flex;
     align-items: center;
@@ -38,6 +57,21 @@
     object-fit: cover;
 }
 
+.products-table .table .game-name {
+    font-weight: 600;
+    font-size: 0.75rem;
+}
+
+
+.products-table .table .categories {
+    width: 150px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    overflow-y: auto;
+}
 
 
 .products-table .table .PS5 {
@@ -52,7 +86,7 @@
 }
 
 .products-table .table .discount,
-.products-table .table .availablity,
+.products-table .table .availability,
 .products-table .table .PS5,
 .products-table .table .PS4 {
     font-family: inherit;
@@ -64,7 +98,7 @@
     text-align: center;
 }
 
-.products-table .table .availablity {
+.products-table .table .availability {
     background-color: #D9DCFF;
     color: #6557FF;
 }
@@ -115,7 +149,6 @@
 .products-table .table .width-140,
 .products-table .table .width-100 {
     max-height: 56px;
-    padding-right: 0.8rem;
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;

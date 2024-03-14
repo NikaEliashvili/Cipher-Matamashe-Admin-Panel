@@ -4,6 +4,10 @@
 .table-container {
     overflow-x: auto;
     max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
 }
 
 /* Style the table */
@@ -55,12 +59,13 @@
 }
 
 
-.table tbody tr td:nth-child(1) .table-cell-content img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
 
-.table tbody tr td:nth-child(2) .table-cell-content {
-    font-weight: 600;
+.table-container .no-data {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 60px;
+    padding-bottom: 1rem;
+    text-wrap: nowrap;
 }
