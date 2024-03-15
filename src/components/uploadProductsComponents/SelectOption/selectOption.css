@@ -73,7 +73,7 @@
     transform: rotate(135deg);
 }
 
-.options-container {
+.select-field .options-container {
     position: absolute;
     top: calc(100% + 4px);
     left: 0;
@@ -122,7 +122,7 @@
     outline: none;
 }
 
-.option {
+.select-field .option {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -136,43 +136,46 @@
     transition: background-color 0.3s ease-out;
 }
 
-.option:hover {
+.select-field .option:hover {
     background-color: #D4D4D4;
 }
 
 
-.checkbox-icon {
-    width: fit-content;
-    height: fit-content;
-    min-width: 15px;
-    min-height: 15px;
+.select-field .checkbox-icon {
+    width: 15px;
+    height: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: 2px solid #3a3b41;
-    font-size: 12px;
     border-radius: 2px;
 }
 
-.checkbox-icon .icon {
+.select-field .checkbox-icon .icon {
+    width: 100%;
+    height: 100%;
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 11px;
     transition: all 0.3s ease-out;
 }
 
-.checkbox-icon .checked {
+.select-field .checkbox-icon .checked {
     background-color: #3a3b41;
     filter: opacity(1);
 }
 
-.checkbox-icon.anim .checked svg {
+.select-field .checkbox-icon.anim .checked svg {
     animation: checkbox-check 0.3s ease-out 1;
 }
 
-.checkbox-icon.anim .unchecked svg {
+.select-field .checkbox-icon.anim .unchecked svg {
     animation: checkbox-uncheck 0.4s ease-out 1;
 }
 
-.checkbox-icon .unchecked {
+.select-field .checkbox-icon .unchecked {
     background-color: transparent;
     filter: opacity(0);
     transition-delay: 0.23s;
@@ -205,16 +208,16 @@
 
 
 /* Adjust scrollbar width as needed */
-.options-container::-webkit-scrollbar {
+.select-field .options-container::-webkit-scrollbar {
     width: 6px;
 }
 
 /* Color of the scrollbar track */
-.options-container::-webkit-scrollbar-track {
+.select-field .options-container::-webkit-scrollbar-track {
     background: #ECECEC;
 }
 
-.options-container::-webkit-scrollbar-thumb {
+.select-field .options-container::-webkit-scrollbar-thumb {
     /* Color of the scrollbar thumb */
     background: #a5a5a5;
     border-radius: 5px;

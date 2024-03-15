@@ -97,6 +97,53 @@ export const ProductsDataExample = [
   },
 ];
 
+export const allColumnNames = [
+  { id: "1", key: "image", isChecked: true, title: "სურათი" },
+  { id: "2", key: "name", isChecked: true, title: "სახელი" },
+  { id: "3", key: "category", isChecked: true, title: "კატეგორია" },
+  {
+    id: "4",
+    key: "availability",
+    isChecked: true,
+    title: "ხელმისაწვდომობა",
+  },
+  { id: "5", key: "priceV1", isChecked: true, title: "ფასი (v1)" },
+  {
+    id: "6",
+    key: "profitV1",
+    isChecked: true,
+    title: "ფასნადები (v1)",
+  },
+  { id: "7", key: "priceV2", isChecked: true, title: "ფასი (v2)" },
+  {
+    id: "8",
+    key: "profitV2",
+    isChecked: true,
+    title: "ფასნადები (v2)",
+  },
+  { id: "9", key: "discount", isChecked: true, title: "ფასდაკლება" },
+  {
+    id: "10",
+    key: "subtitles",
+    isChecked: true,
+    title: "სუბტიტრები",
+  },
+  { id: "11", key: "description", isChecked: true, title: "აღწერა" },
+  {
+    id: "12",
+    key: "voiceover",
+    isChecked: true,
+    title: "გახმოვანება",
+  },
+  { id: "13", key: "views", isChecked: true, title: "ნახვები" },
+  { id: "14", key: "tags", isChecked: true, title: "თეგები" },
+  { id: "15", key: "date", isChecked: true, title: "თარიღი" },
+  { id: "16", key: "quantity", isChecked: true, title: "რაოდენობა" },
+  { id: "17", key: "sales", isChecked: true, title: "გაყიდვები" },
+  { id: "18", key: "ID", isChecked: true, title: "ID" },
+  { id: "19", key: "tools", isChecked: true, title: "ხელსაწყოები" },
+];
+
 export const generateDataSource = (data) => {
   return data.map((product) => ({
     image: (
@@ -182,4 +229,55 @@ export const generateDataSource = (data) => {
       </div>
     ),
   }));
+};
+
+export const generateColumns = (
+  allColumnNames,
+  sortTableDataByKey
+) => {
+  const columns = allColumnNames
+    .filter((item) => item.isChecked)
+    .map(({ key, title }) => {
+      let columnTitle;
+
+      switch (key) {
+        case "name":
+        case "category":
+        case "availability":
+        case "priceV1":
+        case "priceV2":
+        case "profitV1":
+        case "profitV2":
+        case "discount":
+        case "views":
+        case "quantity":
+        case "sales":
+        case "date":
+        case "ID":
+          columnTitle = (
+            <div
+              className="col-title"
+              onClick={() => sortTableDataByKey(key)}
+            >
+              <span className="col-title-name">{title}</span>
+              <img
+                className="col-title-icon"
+                src="/icons/sort-arrows.svg"
+                alt="sort"
+              />
+            </div>
+          );
+          break;
+        default:
+          columnTitle = title;
+      }
+
+      return {
+        key,
+        title: columnTitle,
+        dataIndex: key,
+      };
+    });
+
+  return columns;
 };

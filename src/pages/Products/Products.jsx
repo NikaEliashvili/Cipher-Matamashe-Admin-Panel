@@ -1,292 +1,66 @@
 import "./products.css";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PageHeader from "../../components/PageHeader/PageHeader";
 import Table from "../../components/Table/Table";
 
 import {
   ProductsDataExample,
+  allColumnNames,
+  generateColumns,
   generateDataSource,
 } from "../../constants/productsTableData";
+import FormInput from "../../components/uploadProductsComponents/FormInput/FormInput";
+import MenuButton from "../../components/MenuButton/MenuButton";
 
 export default function Products() {
-  const productsData = ProductsDataExample;
+  const [searchTerm, setSearchTerm] = useState("");
+  const [productsData, setProductsData] = useState(
+    ProductsDataExample
+  );
   const [sortedBy, setSortedBy] = useState(null);
+  const [menuItems, setMenuItems] = useState(allColumnNames);
+
   const [dataSource, setDataSource] = useState(
     generateDataSource(productsData)
   );
   const sortTableDataByKey = (key) => {
     if (sortedBy === key) {
-      productsData.sort((a, b) => (a[key] < b[key] ? 1 : -1));
-      console.log("Clicked on " + key);
+      setProductsData((prev) =>
+        prev.sort((a, b) => (a[key] < b[key] ? 1 : -1))
+      );
       setSortedBy(null);
     } else {
-      productsData.sort((a, b) => (a[key] < b[key] ? -1 : 1));
-      console.log("Clicked on " + key);
+      setProductsData((prev) =>
+        prev.sort((a, b) => (a[key] < b[key] ? -1 : 1))
+      );
       setSortedBy(key);
     }
     setDataSource(generateDataSource(productsData));
   };
-  const columns = [
-    { key: "image", title: "სურათი", dataIndex: "image" },
-    {
-      key: "name",
-      get title() {
-        return (
-          <div
-            className="col-title"
-            onClick={() => sortTableDataByKey(this.key)}
-          >
-            <span className="col-title-name">სახელი</span>
-            <img
-              className="col-title-icon"
-              src="/icons/sort-arrows.svg"
-              alt="sort"
-            />
-          </div>
-        );
-      },
-      dataIndex: "name",
-    },
-    {
-      key: "category",
-      get title() {
-        return (
-          <div
-            className="col-title"
-            onClick={() => sortTableDataByKey(this.key)}
-          >
-            <span className="col-title-name">კატეგორია</span>
-            <img
-              className="col-title-icon"
-              src="/icons/sort-arrows.svg"
-              alt="sort"
-            />
-          </div>
-        );
-      },
-      dataIndex: "category",
-    },
-    {
-      key: "availability",
-      get title() {
-        return (
-          <div
-            className="col-title"
-            onClick={() => sortTableDataByKey(this.key)}
-          >
-            <span className="col-title-name">ხელმისაწვდომობა</span>
-            <img
-              className="col-title-icon"
-              src="/icons/sort-arrows.svg"
-              alt="sort"
-            />
-          </div>
-        );
-      },
-      dataIndex: "availability",
-    },
-    {
-      key: "priceV1",
-      get title() {
-        return (
-          <div
-            className="col-title"
-            onClick={() => sortTableDataByKey(this.key)}
-          >
-            <span className="col-title-name">ფასი (v1)</span>
-            <img
-              className="col-title-icon"
-              src="/icons/sort-arrows.svg"
-              alt="sort"
-            />
-          </div>
-        );
-      },
-      dataIndex: "priceV1",
-    },
-    {
-      key: "profitV1",
-      get title() {
-        return (
-          <div
-            className="col-title"
-            onClick={() => sortTableDataByKey(this.key)}
-          >
-            <span className="col-title-name">ფასნადები (v1)</span>
-            <img
-              className="col-title-icon"
-              src="/icons/sort-arrows.svg"
-              alt="sort"
-            />
-          </div>
-        );
-      },
-      dataIndex: "profitV1",
-    },
-    {
-      key: "priceV2",
-      get title() {
-        return (
-          <div
-            className="col-title"
-            onClick={() => sortTableDataByKey(this.key)}
-          >
-            <span className="col-title-name">ფასი (v2)</span>
-            <img
-              className="col-title-icon"
-              src="/icons/sort-arrows.svg"
-              alt="sort"
-            />
-          </div>
-        );
-      },
-      dataIndex: "priceV2",
-    },
-    {
-      key: "profitV2",
-      get title() {
-        return (
-          <div
-            className="col-title"
-            onClick={() => sortTableDataByKey(this.key)}
-          >
-            <span className="col-title-name">ფასნადები (v2)</span>
-            <img
-              className="col-title-icon"
-              src="/icons/sort-arrows.svg"
-              alt="sort"
-            />
-          </div>
-        );
-      },
-      dataIndex: "profitV2",
-    },
-    {
-      key: "discount",
-      get title() {
-        return (
-          <div
-            className="col-title"
-            onClick={() => sortTableDataByKey(this.key)}
-          >
-            <span className="col-title-name">ფასდაკლება</span>
-            <img
-              className="col-title-icon"
-              src="/icons/sort-arrows.svg"
-              alt="sort"
-            />
-          </div>
-        );
-      },
-      dataIndex: "discount",
-    },
-    { key: "subtitles", title: "სუბტიტრები", dataIndex: "subtitles" },
-    { key: "description", title: "აღწერა", dataIndex: "description" },
-    {
-      key: "voiceover",
-      title: "გახმოვანება",
-      dataIndex: "voiceover",
-    },
-    {
-      key: "views",
-      get title() {
-        return (
-          <div
-            className="col-title"
-            onClick={() => sortTableDataByKey(this.key)}
-          >
-            <span className="col-title-name">ნახვები</span>
-            <img
-              className="col-title-icon"
-              src="/icons/sort-arrows.svg"
-              alt="sort"
-            />
-          </div>
-        );
-      },
-      dataIndex: "views",
-    },
-    { key: "tags", title: "თეგები", dataIndex: "tags" },
-    {
-      key: "date",
-      get title() {
-        return (
-          <div
-            className="col-title"
-            onClick={() => sortTableDataByKey(this.key)}
-          >
-            <span className="col-title-name">თარიღი</span>
-            <img
-              className="col-title-icon"
-              src="/icons/sort-arrows.svg"
-              alt="sort"
-            />
-          </div>
-        );
-      },
-      dataIndex: "date",
-    },
-    {
-      key: "quantity",
-      get title() {
-        return (
-          <div
-            className="col-title"
-            onClick={() => sortTableDataByKey(this.key)}
-          >
-            <span className="col-title-name">რაოდენობა</span>
-            <img
-              className="col-title-icon"
-              src="/icons/sort-arrows.svg"
-              alt="sort"
-            />
-          </div>
-        );
-      },
-      dataIndex: "quantity",
-    },
-    {
-      key: "sales",
-      get title() {
-        return (
-          <div
-            className="col-title"
-            onClick={() => sortTableDataByKey(this.key)}
-          >
-            <span className="col-title-name">გაყიდვები</span>
-            <img
-              className="col-title-icon"
-              src="/icons/sort-arrows.svg"
-              alt="sort"
-            />
-          </div>
-        );
-      },
-      dataIndex: "sales",
-    },
-    {
-      key: "ID",
-      get title() {
-        return (
-          <div
-            className="col-title"
-            onClick={() => sortTableDataByKey(this.key)}
-          >
-            <span className="col-title-name">ID</span>
-            <img
-              className="col-title-icon"
-              src="/icons/sort-arrows.svg"
-              alt="sort"
-            />
-          </div>
-        );
-      },
-      dataIndex: "ID",
-    },
-    { key: "tools", title: "ხელსაწყოები", dataIndex: "tools" },
-  ];
 
+  const chooseFilters = (id) => {
+    setMenuItems((prev) =>
+      prev.map((item) =>
+        item.id === id
+          ? { ...item, isChecked: !item.isChecked }
+          : item
+      )
+    );
+  };
+
+  useEffect(() => {
+    const getData = setTimeout(() => {
+      const filteredData = ProductsDataExample.filter((product) =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setProductsData(filteredData);
+      setDataSource(generateDataSource(filteredData));
+    }, 300);
+    return () => clearTimeout(getData);
+  }, [searchTerm]);
+
+  const columns = generateColumns(menuItems, sortTableDataByKey);
   return (
     <div className="products-page">
       <div className="header">
@@ -296,10 +70,34 @@ export default function Products() {
           icon={"/icons/products-page-logo.svg"}
         />
       </div>
-      <div className="SearchFilterWrapper"></div>
-      <div className="products-table">
-        <Table columns={columns} dataSource={dataSource} />
+      <div className="SearchFilterWrapper">
+        <div className="search-bar">
+          <img
+            width={12}
+            src="/icons/search-icon.svg"
+            alt="search"
+            className="search-icon"
+          />
+          <input
+            type="text"
+            className="search-input"
+            placeholder="მოძებნეთ პროდუქტის სახელი, აღწერა..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+        <div className="column-selector">
+          <MenuButton
+            chooseFilters={chooseFilters}
+            menuItems={menuItems.slice(1, -1)}
+          />
+        </div>
       </div>
+      {columns && (
+        <div className="products-table">
+          <Table columns={columns} dataSource={dataSource} />
+        </div>
+      )}
     </div>
   );
 }
