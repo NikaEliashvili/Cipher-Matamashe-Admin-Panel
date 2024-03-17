@@ -14,6 +14,7 @@ import AuthRequired from "./components/AuthRequired/AuthRequired";
 import UploadProducts from "./pages/UploadProducts/UploadProducts";
 import { authToken } from "./redux/authSlice";
 import Products from "./pages/Products/Products";
+import Accounts from "./pages/Accounts/Accounts";
 
 function App() {
   const isLogged = useSelector(authToken);
@@ -34,7 +35,7 @@ function App() {
               <Route path="upload" element={<UploadProducts />} />
               <Route path="analytics" element={<UploadProducts />} />
               <Route path="messages" element={<UploadProducts />} />
-              <Route path="accounts" element={<UploadProducts />} />
+              <Route path="accounts" element={<Accounts />} />
             </Route>
           </Route>
           <Route path="*" element={<ErrorPage />} />

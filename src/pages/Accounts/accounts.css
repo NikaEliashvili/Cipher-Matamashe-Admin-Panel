@@ -1,0 +1,100 @@
+.accounts-page {
+    width: 100%;
+    margin: 2.5rem 0 3rem;
+}
+
+
+
+
+.accounts-page .search-bar {
+    width: 100%;
+    max-width: 605px;
+    padding: 0 22px;
+    box-shadow: inset 0 0 0 1px #B9BDC6;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: transparent;
+    gap: 14px;
+    border-radius: 7px;
+    margin-bottom: 4rem;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.accounts-page .search-bar .search-icon {
+    filter: opacity(0.7);
+}
+
+.accounts-page .search-bar .search-input {
+    font-family: inherit;
+    font-weight: 200;
+    font-size: 0.75rem;
+    color: #2D3445;
+    border: none;
+    background: none;
+    width: 100%;
+    padding: 1rem 0;
+}
+
+.accounts-page .search-bar .search-input::placeholder {
+    color: #2D3445;
+    filter: opacity(0.95);
+}
+
+
+
+.accounts-page .table .purchaseFrequency {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.75rem;
+}
+
+.accounts-page .table .purchaseFrequency-value {
+    margin-top: 3px;
+}
+
+
+.accounts-page .table .purchaseFrequency .purchaseFrequency-icon {
+    width: 39px !important;
+}
+
+
+.accounts-page .table .feedback,
+.accounts-page .table .otherInformation {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.accounts-page .table .action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px !important;
+    height: 36px !important;
+    background-color: #EDF4FF;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.39);
+    padding: 6px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.25s ease-out;
+}
+
+.accounts-page .table .action-btn:hover {
+    filter: brightness(0.95)
+}
+
+/* .accounts-page .table .action-btn img {
+    width: 100%;
+    height: 100%;
+
+} */
+
+
+.other-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 6px;
+}
