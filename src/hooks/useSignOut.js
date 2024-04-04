@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import signOut from "../services/signOut";
+import signOut from "../services/authServices/signOut";
 import { authToken } from "../redux/authSlice";
 
 const useSignOut = () => {

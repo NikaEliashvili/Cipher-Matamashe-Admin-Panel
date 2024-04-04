@@ -12,21 +12,21 @@ const ChoosePriceForm = ({ formFor }) => {
   const formData = useSelector(selectFormData);
 
   const takenData = {
-    title: formFor === "PS4" ? "PlayStation 4" : "PlayStation 5",
+    title: formFor === 1 ? "PlayStation 4" : "PlayStation 5",
     valueSecondary:
-      formFor === "PS4"
+      formFor === 1
         ? formData.secondaryPricePS4
         : formData.secondaryPricePS5,
     valueSecondaryProfit:
-      formFor === "PS4"
+      formFor === 1
         ? formData.secondaryPriceProfitPS4
         : formData.secondaryPriceProfitPS5,
     valuePrimary:
-      formFor === "PS4"
+      formFor === 1
         ? formData.primaryPricePS4
         : formData.primaryPricePS5,
     valuePrimaryProfit:
-      formFor === "PS4"
+      formFor === 1
         ? formData.primaryPriceProfitPS4
         : formData.primaryPriceProfitPS5,
   };
@@ -54,7 +54,7 @@ const ChoosePriceForm = ({ formFor }) => {
             placeholder="v1price"
             value={takenData.valueSecondary || ""}
             handleChange={handleChange}
-            name={"secondaryPrice" + formFor}
+            name={"secondaryPrice" + (formFor === 1 ? "PS4" : "PS5")}
             pattern="[0-9]+"
           />
           <FormInput
@@ -62,7 +62,9 @@ const ChoosePriceForm = ({ formFor }) => {
             placeholder="v1income"
             value={takenData.valueSecondaryProfit || ""}
             handleChange={handleChange}
-            name={"secondaryPriceProfit" + formFor}
+            name={
+              "secondaryPriceProfit" + (formFor === 1 ? "PS4" : "PS5")
+            }
             pattern="[0-9]+"
           />
         </div>
@@ -72,7 +74,7 @@ const ChoosePriceForm = ({ formFor }) => {
             placeholder="v2price"
             value={takenData.valuePrimary || ""}
             handleChange={handleChange}
-            name={"primaryPrice" + formFor}
+            name={"primaryPrice" + (formFor === 1 ? "PS4" : "PS5")}
             pattern="[0-9]+"
           />
           <FormInput
@@ -80,7 +82,9 @@ const ChoosePriceForm = ({ formFor }) => {
             placeholder="v2income"
             value={takenData.valuePrimaryProfit || ""}
             handleChange={handleChange}
-            name={"primaryPriceProfit" + formFor}
+            name={
+              "primaryPriceProfit" + (formFor === 1 ? "PS4" : "PS5")
+            }
             pattern="[0-9]+"
           />
         </div>

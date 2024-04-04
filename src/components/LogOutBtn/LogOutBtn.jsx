@@ -1,8 +1,5 @@
 import React from "react";
 import "./logOutBtn.css";
-import signOut from "../../services/signOut";
-import { useDispatch, useSelector } from "react-redux";
-import { authToken } from "../../redux/authSlice";
 import useSignOut from "../../hooks/useSignOut";
 export default function LogOutBtn({ classNames }) {
   const [handleSignOut, isLoading, error] = useSignOut();

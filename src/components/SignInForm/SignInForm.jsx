@@ -1,15 +1,10 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "./signInForm.css";
 import Input from "../Input/Input";
 import Button from "../Button/Button";
-import logInService from "../../services/logInService";
-import { useDispatch } from "react-redux";
 import useSignIn from "../../hooks/useSignIn";
 
 export default function SignInForm() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [inputType, setInputType] = useState("password");
   const [eyeIcon, setEyeIcon] = useState("/icons/eye-closed.svg");
   const userIcon = "/icons/user.svg";

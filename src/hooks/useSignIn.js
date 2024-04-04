@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import logInService from "../services/logInService";
+import logInService from "../services/authServices/logInService";
 
 const useSignIn = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -25,8 +25,9 @@ const useSignIn = () => {
     } catch (err) {
       setError({
         status: err.status,
-        message: err.data.message,
+        message: err.data.error,
       });
+    } finally {
       setIsLoading(false);
     }
   };

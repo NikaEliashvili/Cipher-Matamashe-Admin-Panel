@@ -10,8 +10,6 @@ const TagsContainer = () => {
   const dispatch = useDispatch();
   const formData = useSelector(selectFormData);
 
-  console.log(!!formData.voicingLangs.length);
-
   useEffect(() => {
     if (
       !formData.productName &&

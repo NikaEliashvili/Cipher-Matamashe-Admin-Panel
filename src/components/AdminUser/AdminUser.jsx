@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import "./adminUser.css";
-import getUserByToken from "../../services/getUserByToken";
-import { useDispatch, useSelector } from "react-redux";
-import { authToken } from "../../redux/authSlice";
 import { ThreeDots } from "react-loader-spinner";
 import useGetUserByToken from "../../hooks/useGetUserByToken ";
 export default function AdminUser() {
-  const [adminUser, isLoading, error] = useGetUserByToken();
+  // const [adminUser, isLoading, error] = useGetUserByToken();
+  const [adminUser, isLoading, error] = [null, false, null];
 
   return (
     <div className="user-container">

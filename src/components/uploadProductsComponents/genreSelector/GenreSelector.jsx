@@ -10,49 +10,44 @@ import "./genreSelector.css";
 const GenreSelector = ({ genre }) => {
   const dispatch = useDispatch();
   const formData = useSelector(selectFormData);
-  // const [isChecked, setIsChecked] = useState(
-  //   formData.chooseGenre?.includes(genre)
-  // );
+
   const handleChange = (e) => {
-    const { name, checked } = e.target;
-    // setIsChecked((prev) => !prev);
+    const { name, value, checked } = e.target;
 
     /* Change Value in upload Data Redux Store */
     if (checked) {
       dispatch(
         updateFormField({
           fieldName: "chooseGenre",
-          value: [...formData.chooseGenre, genre],
+          value: [...formData.chooseGenre, parseInt(value)],
         })
       );
     } else {
       const newArr = formData.chooseGenre?.filter(
-        (genre) => genre !== name
+        (genreId) => genreId !== parseInt(value)
       );
-      // formData.chooseGenre?.forEach((genre) => {
-      //   if (genre !== name) {
-      //     newArr.push(genre);
-      //   }
-      // });
 
       dispatch(
         updateFormField({ fieldName: "chooseGenre", value: newArr })
       );
     }
   };
-
   return (
     <div className="genre-selector-div">
       <input
-        id={genre}
-        name={genre}
+        id={genre.name + genre.genre_id}
+        name={genre.name}
+        value={genre.genre_id}
         type="checkbox"
-        checked={formData.chooseGenre?.includes(genre)}
+        checked={formData.chooseGenre?.includes(genre.genre_id)}
         onChange={handleChange}
       />
-      <label htmlFor={genre} className="genre-selector">
+      <label
+        htmlFor={genre.name + genre.genre_id}
+        className="genre-selector"
+      >
         <div className="genre-btn-icon"></div>
-        <span className="genre-text">{genre}</span>
+        <span className="genre-text">{genre.name}</span>
       </label>
     </div>
   );

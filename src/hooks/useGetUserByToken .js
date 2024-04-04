@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import getUserByToken from "../services/getUserByToken";
+import getUserByToken from "../services/authServices/getUserByToken";
 import { authToken } from "../redux/authSlice";
 
 const useGetUserByToken = () => {

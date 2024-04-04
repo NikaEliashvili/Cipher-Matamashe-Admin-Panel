@@ -7,32 +7,58 @@ import {
   setNewJWT,
 } from "../../redux/authSlice";
 import Button from "../Button/Button";
-import expirationTime from "../../constants/expirationTime";
-import getUserByToken from "../../services/getUserByToken";
-import logInService from "../../services/logInService";
+import getUserByToken from "../../services/authServices/getUserByToken";
+import logInService from "../../services/authServices/logInService";
+import refreshToken from "../../services/authServices/refreshToken";
+import { jwtDecode } from "jwt-decode";
 
 const SessionTimeout = () => {
   const dispatch = useDispatch();
   const token = useSelector(authToken);
   const [showMessage, setShowMessage] = useState(false);
   const [isClosed, setIsClosed] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(300); // 5 minutes in seconds
+  const [timeLeft, setTimeLeft] = useState(null);
+  const expirationDate = jwtDecode(token).exp;
 
   useEffect(() => {
-    if (showMessage) {
-      const interval = setInterval(() => {
-        setTimeLeft((prevTime) => prevTime - 1);
-      }, 1000);
+    const checkExpiration = () => {
+      // Create a new Date object with the given date and time for testing purposes
+      // const date = new Date("Thu Apr 04 2024 19:06:20 GMT+0400");
+      // Get the Unix timestamp (seconds since the Unix epoch) for testing purposes
+      // const expTimeTimestamp = Math.floor(date.getTime() / 1000);
 
-      return () => clearInterval(interval);
-    }
-  }, [showMessage]);
+      // Calculate remaining time until expiration
+      const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+      const remainingTime = expirationDate - currentTime;
 
-  useEffect(() => {
-    if (timeLeft <= 0) {
-      handleLogout();
-    }
-  }, [timeLeft, setTimeLeft, dispatch]);
+      if (remainingTime < 0) {
+        // If expiration time has already passed, log out
+        handleLogout();
+      } else if (remainingTime <= 5 * 60 && remainingTime >= 0) {
+        // If remaining time is less than or equal to 5 minutes, show session timeout message
+        if (showMessage === false) {
+          setShowMessage(true);
+        }
+        setTimeLeft(remainingTime);
+      } else {
+        // If remaining time is greater than 5 minutes, no need to show message
+        if (showMessage) {
+          setShowMessage(false);
+        }
+      }
+    };
+
+    // Call checkExpiration immediately
+    checkExpiration();
+
+    // Schedule checkExpiration to run every second
+    const interval = setInterval(() => {
+      checkExpiration();
+    }, 1000);
+
+    // Clear interval on component unmount to prevent memory leaks
+    return () => clearInterval(interval);
+  }, [expirationDate]);
 
   const handleContinueSession = () => {
     setIsClosed(true);
@@ -40,9 +66,10 @@ const SessionTimeout = () => {
     /**Add time out for Animation */
     setTimeout(() => {
       setIsClosed(false);
-      getUserByToken(token, dispatch).then((userData) => {
-        logInService(userData.username, userData.password, dispatch);
-      });
+      // getUserByToken(token, dispatch).then((userData) => {
+      //   logInService(userData.username, userData.password, dispatch);
+      // });
+      refreshToken(token, dispatch);
       setShowMessage(false);
     }, 800);
   };
@@ -56,16 +83,6 @@ const SessionTimeout = () => {
       dispatch(clearJWT());
     }, 800);
   };
-
-  useEffect(() => {
-    // Show the session timeout message 5 minutes before the expiration time
-    const timeout = setTimeout(() => {
-      setShowMessage(true);
-      console.log("run");
-    }, expirationTime - 5 * 60 * 1000);
-
-    return () => clearTimeout(timeout);
-  }, []);
 
   // Convert timeLeft to minutes and seconds
 

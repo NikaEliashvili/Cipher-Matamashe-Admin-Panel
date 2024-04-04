@@ -1,5 +1,5 @@
 import axios from "axios";
-import { clearJWT, setUser } from "../redux/authSlice";
+import { clearJWT, setUser } from "../../redux/authSlice";
 
 const API_URL_CHECK = "https://api.matamashe.ge/adminCheck.php";
 
@@ -20,7 +20,7 @@ const getUserByToken = async (token, dispatch) => {
     // Check if the error indicates token expiration
     if (error.response && error.response.status === 401) {
       // Token is expired, clear JWT token and user data
-      dispatch(clearJWT());
+      // dispatch(clearJWT());
     }
     throw error;
   }

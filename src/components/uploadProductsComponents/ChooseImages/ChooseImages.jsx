@@ -25,16 +25,16 @@ const ChooseImages = () => {
 
   const ps4AndPs5FieldsAreNull =
     (ps4FieldsAreNull || ps5FieldsAreNull) &&
-    formData.chooseCategory.includes("PS4") &&
-    formData.chooseCategory.includes("PS5");
+    formData.chooseCategory.includes(1) &&
+    formData.chooseCategory.includes(2);
 
   const onlyPs4Category =
     formData.chooseCategory.length === 1 &&
-    formData.chooseCategory.includes("PS4");
+    formData.chooseCategory.includes(1);
 
   const onlyPs5Category =
     formData.chooseCategory.length === 1 &&
-    formData.chooseCategory.includes("PS5");
+    formData.chooseCategory.includes(2);
 
   const ps4FieldsIsNull =
     !formData.secondaryPricePS4 &&

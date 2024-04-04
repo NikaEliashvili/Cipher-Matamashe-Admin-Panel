@@ -8,11 +8,12 @@ const CategorySelector = ({ name, value, checked, handleChange }) => {
           id={name}
           type="checkbox"
           name={name}
+          value={value}
           checked={checked}
           onChange={handleChange}
         />
         <label htmlFor={name} className="category-selector">
-          <span className="category-selector-text">{value}</span>
+          <span className="category-selector-text">{name}</span>
         </label>
       </div>
     </>

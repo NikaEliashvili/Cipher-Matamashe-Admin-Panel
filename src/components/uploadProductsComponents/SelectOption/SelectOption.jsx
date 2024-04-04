@@ -44,7 +44,7 @@ const SelectOption = ({
 
   const filteredOptions = searchTerm
     ? options.filter((option) =>
-        option.toLowerCase().includes(searchTerm.toLowerCase())
+        option.name.toLowerCase().includes(searchTerm.toLowerCase())
       )
     : options;
 

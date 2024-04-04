@@ -48,7 +48,7 @@ const uploadFormSlice = createSlice({
       state.formData.primaryPriceProfitPS5 = null;
     },
     resetPriceFieldsByCategory: (state, action) => {
-      const changePS = action.payload === "PS4" ? "PS5" : "PS4";
+      const changePS = action.payload === 1 ? "PS5" : "PS4";
       state.formData["secondaryPrice" + changePS] = null;
       state.formData["secondaryPriceProfit" + changePS] = null;
       state.formData["primaryPrice" + changePS] = null;

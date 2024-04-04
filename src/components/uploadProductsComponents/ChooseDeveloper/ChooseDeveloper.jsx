@@ -1,17 +1,30 @@
 import { useDispatch, useSelector } from "react-redux";
 import "./chooseDeveloper.css";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   selectFormData,
   updateFormField,
 } from "../../../redux/uploadFormSlice";
 import SelectOption from "../SelectOption/SelectOption";
+import getListDevelopers from "../../../services/productServices/getListDevelopers";
 import developersList from "../../../constants/developersList";
 
 const ChooseDeveloper = () => {
   const dispatch = useDispatch();
   const formData = useSelector(selectFormData);
+  // const [developersList, setDevelopersList] = useState(null);
+
+  // For  fetching the list of Developers
+  // useEffect(() => {
+  //   const fetchDevelopers = async () => {
+  //     const data = await getListDevelopers();
+  //     if (data) {
+  //       setDevelopersList(data);
+  //     }
+  //   };
+  //   fetchDevelopers();
+  // });
 
   const handleChange = (optionValue) => {
     dispatch(

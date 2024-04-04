@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./chooseCategory.css";
 import CategorySelector from "../CategorySelector/CategorySelector";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,23 +6,34 @@ import {
   selectFormData,
   updateFormField,
 } from "../../../redux/uploadFormSlice";
+import getListCategories from "../../../services/productServices/getListCategories";
 
 const ChooseCategory = () => {
   const dispatch = useDispatch();
   const formData = useSelector(selectFormData);
+  const [categories, setCategories] = useState(null);
+
+  useEffect(() => {
+    const fetchedCategories = async () => {
+      const data = await getListCategories();
+      setCategories(data);
+    };
+    fetchedCategories();
+    // setCategories(fetchedCategories.data);
+  }, []);
 
   const handleChange = (e) => {
-    const { name, checked } = e.target;
+    const { value, checked } = e.target;
     if (checked) {
       dispatch(
         updateFormField({
           fieldName: "chooseCategory",
-          value: [...formData.chooseCategory, name],
+          value: [...formData.chooseCategory, parseInt(value)],
         })
       );
     } else {
       const newArr = formData.chooseCategory?.filter(
-        (item) => item !== name
+        (item) => item !== parseInt(value)
       );
       dispatch(
         updateFormField({
@@ -37,13 +48,22 @@ const ChooseCategory = () => {
     <div className="choose-category">
       <h6 className="choose-category-title">აირჩიეთ კატეგორია</h6>
       <div className="categories">
-        {data.map((a, i) => (
+        {/* {data.map((a, i) => (
           <CategorySelector
             key={i + 1}
             name={a.name}
             value={a.value}
             handleChange={handleChange}
             checked={formData.chooseCategory?.includes(a.name)}
+          />
+        ))} */}
+        {categories?.map((a, i) => (
+          <CategorySelector
+            key={i + 1}
+            name={a.name}
+            value={a.category_id}
+            handleChange={handleChange}
+            checked={formData.chooseCategory?.includes(a.category_id)}
           />
         ))}
       </div>

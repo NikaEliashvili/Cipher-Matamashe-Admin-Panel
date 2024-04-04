@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectFormData,
@@ -7,11 +7,24 @@ import {
 import GenreSelector from "../genreSelector/GenreSelector";
 
 import "./chooseGenres.css";
-import genres from "../../../constants/genres";
+// import genres from "../../../constants/genres";
+import getListGenres from "../../../services/productServices/getListGenres";
 
 const ChooseGenres = () => {
   const dispatch = useDispatch();
   const formData = useSelector(selectFormData);
+  const [genres, setGenres] = useState(null);
+
+  useEffect(() => {
+    const fetchingGenres = async () => {
+      const data = await getListGenres();
+      if (data) {
+        setGenres(data);
+      }
+    };
+
+    fetchingGenres();
+  }, []);
 
   useEffect(() => {
     if (
@@ -42,9 +55,16 @@ const ChooseGenres = () => {
     >
       <h6 className="choose-category-title">აირჩიეთ ჟანრი</h6>
       <div className="genres">
-        {genres.sort().map((genre, index) => (
-          <GenreSelector key={index + 1} genre={genre} />
-        ))}
+        {genres
+          ? genres
+              .sort()
+              .map((genre) => (
+                <GenreSelector
+                  key={genre.name + genre.genre_id}
+                  genre={genre}
+                />
+              ))
+          : null}
       </div>
     </div>
   );
