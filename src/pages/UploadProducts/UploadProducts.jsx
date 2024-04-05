@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import "./uploadProducts.css";
 import PageHeader from "../../components/PageHeader/PageHeader";
@@ -13,14 +13,32 @@ import ChooseQuantity from "../../components/uploadProductsComponents/ChooseQuan
 import DetailsAboutGame from "../../components/uploadProductsComponents/DetailsAboutGame/DetailsAboutGame";
 import TagsContainer from "../../components/uploadProductsComponents/TagsContainer/TagsContainer";
 import ButtonsContainer from "../../components/uploadProductsComponents/ButtonsContainer/ButtonsContainer";
-import { useSelector } from "react-redux";
-import { selectFormData } from "../../redux/uploadFormSlice";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  resetForm,
+  selectFormData,
+} from "../../redux/uploadFormSlice";
+import createProduct from "../../services/productServices/createProduct";
+import { authToken } from "../../redux/authSlice";
 
 export default function UploadProducts() {
+  const token = useSelector(authToken);
+  const dispatch = useDispatch();
   const formData = useSelector(selectFormData);
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    setIsSubmitting(true);
+    createProduct(formData, token)
+      .then((res) => {
+        console.log(res);
+        dispatch(resetForm());
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   };
 
   return (
@@ -40,7 +58,7 @@ export default function UploadProducts() {
       <ChooseQuantity />
       <DetailsAboutGame />
       <TagsContainer />
-      <ButtonsContainer />
+      <ButtonsContainer isLoading={isSubmitting} />
     </form>
   );
 }

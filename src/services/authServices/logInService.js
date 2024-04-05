@@ -1,4 +1,3 @@
-import { jwtDecode } from "jwt-decode";
 import { setNewJWT } from "../../redux/authSlice";
 import matamasheApi from "../matamasheApi";
 

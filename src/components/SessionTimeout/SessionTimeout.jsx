@@ -23,7 +23,7 @@ const SessionTimeout = () => {
   useEffect(() => {
     const checkExpiration = () => {
       // Create a new Date object with the given date and time for testing purposes
-      // const date = new Date("Thu Apr 04 2024 19:06:20 GMT+0400");
+      // const date = new Date("Thu Apr 04 2024 22:12:20 GMT+0400");
       // Get the Unix timestamp (seconds since the Unix epoch) for testing purposes
       // const expTimeTimestamp = Math.floor(date.getTime() / 1000);
 

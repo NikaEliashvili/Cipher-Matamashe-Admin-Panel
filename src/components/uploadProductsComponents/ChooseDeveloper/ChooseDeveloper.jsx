@@ -16,15 +16,15 @@ const ChooseDeveloper = () => {
   // const [developersList, setDevelopersList] = useState(null);
 
   // For  fetching the list of Developers
-  // useEffect(() => {
-  //   const fetchDevelopers = async () => {
-  //     const data = await getListDevelopers();
-  //     if (data) {
-  //       setDevelopersList(data);
-  //     }
-  //   };
-  //   fetchDevelopers();
-  // });
+  useEffect(() => {
+    const fetchDevelopers = async () => {
+      const data = await getListDevelopers();
+      if (data) {
+        // setDevelopersList(data);
+      }
+    };
+    fetchDevelopers();
+  });
 
   const handleChange = (optionValue) => {
     dispatch(
