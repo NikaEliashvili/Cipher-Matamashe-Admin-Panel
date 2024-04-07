@@ -1,16 +1,25 @@
 import { useDispatch, useSelector } from "react-redux";
 import "./chooseImages.css";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   selectFormData,
   updateFormField,
 } from "../../../redux/uploadFormSlice";
+import uploadImage from "../../../services/productServices/uploadImage";
+import { authToken } from "../../../redux/authSlice";
+import Compressor from "compressorjs";
+import MAX_IMAGES_COUNT from "../../../constants/uploadImagesCount";
+import { TailSpin } from "react-loader-spinner";
+
+const bytesToMB = (size) => size / 1024 / 1024;
 
 const ChooseImages = () => {
   const dispatch = useDispatch();
   const formData = useSelector(selectFormData);
+  const token = useSelector(authToken);
   const formDataImages = formData.chooseImages;
+  const [isUploading, setIsUploading] = useState(false);
   const ps4FieldsAreNull =
     !formData.secondaryPricePS4 ||
     !formData.secondaryPriceProfitPS4 ||
@@ -48,7 +57,7 @@ const ChooseImages = () => {
     !formData.primaryPricePS5 &&
     !formData.primaryPriceProfitPS5;
 
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     const { files } = e.target;
 
     let selectedImages = Array.from(files).filter(
@@ -62,14 +71,39 @@ const ChooseImages = () => {
     ) {
       const imagesUrlCopy = [...formDataImages];
       if (selectedImages.length > 0) {
+        setIsUploading(true);
         for (const file of selectedImages) {
-          if (bytesToMB(file.size) <= 10) {
-            const formData = new FormData();
-            formData.append("image", file);
-            imagesUrlCopy.push(URL.createObjectURL(file));
+          if (bytesToMB(file.size) >= 1) {
+            try {
+              const compressedFile = await compressImage(file);
+              const uploadImageUrl = await uploadImage(
+                token,
+                compressedFile
+              );
+              if (uploadImageUrl) {
+                console.log({
+                  File: file.size,
+                  compressedFile: compressedFile.size,
+                });
+                imagesUrlCopy.push(uploadImageUrl);
+              }
+            } catch (error) {
+              console.error(
+                "Error compressing or uploading image:",
+                error
+              );
+            }
+          } else {
+            const uploadImageUrl = await uploadImage(token, file);
+            if (uploadImageUrl) {
+              imagesUrlCopy.push(uploadImageUrl);
+            }
           }
+          setIsUploading(false);
+          // const formData = new FormData();
+          // formData.append("image", file);
+          // imagesUrlCopy.push(URL.createObjectURL(file));
         }
-        // setImagesURL(imagesUrlCopy);
         dispatch(
           updateFormField({
             fieldName: "chooseImages",
@@ -103,7 +137,6 @@ const ChooseImages = () => {
           ps5FieldsIsNull &&
           formData.chooseCategory.length === 2))
     ) {
-      console.log("run");
       dispatch(
         updateFormField({ fieldName: "chooseImages", value: [] })
       );
@@ -187,7 +220,11 @@ const ChooseImages = () => {
           </div>
         ))}
         {formDataImages.length < MAX_IMAGES_COUNT && (
-          <div className="image-preview"></div>
+          <div className="image-preview">
+            {isUploading && (
+              <TailSpin height={50} strokeWidth={3} radius={3} />
+            )}
+          </div>
         )}
         <input
           className="image-preview-input"
@@ -219,6 +256,19 @@ const ChooseImages = () => {
 
 export default React.memo(ChooseImages);
 
-const bytesToMB = (size) => size / 1024 / 1024;
-
-const MAX_IMAGES_COUNT = 6;
+const compressImage = (file) => {
+  return new Promise((resolve, reject) => {
+    new Compressor(file, {
+      quality: 0.8, // Adjust quality as needed
+      maxWidth: 1920, // Adjust maximum width as needed
+      maxHeight: 1080, // Adjust maximum height as needed
+      mimeType: "image/jpeg", // Adjust mime type as needed
+      success(result) {
+        resolve(result); // Resolve with compressed image
+      },
+      error(error) {
+        reject(error); // Reject with compression error
+      },
+    });
+  });
+};

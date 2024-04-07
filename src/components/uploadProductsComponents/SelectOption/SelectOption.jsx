@@ -21,7 +21,6 @@ const SelectOption = ({
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
-
   const handleSelectOption = (option) => {
     if (!isMultiple) {
       if (hasOtherOption) {
@@ -33,7 +32,7 @@ const SelectOption = ({
       setSearchTerm("");
     } else {
       if (option === "") {
-        handleChange(name, "none");
+        handleChange(name, []);
         setIsOpen(false);
         setSearchTerm("");
       } else {
@@ -41,12 +40,6 @@ const SelectOption = ({
       }
     }
   };
-
-  const filteredOptions = searchTerm
-    ? options.filter((option) =>
-        option.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    : options;
 
   useEffect(() => {
     const handleOutsideClick = (e) => {
@@ -64,6 +57,30 @@ const SelectOption = ({
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, []);
+  const filteredOptions = searchTerm
+    ? options?.filter((option) =>
+        option?.name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : options;
+
+  const selectedOptions = () => {
+    if (!isMultiple) {
+      const chosenOption =
+        options?.filter((option) => option.id === value)[0]?.name ||
+        "არ არის არჩეული";
+      return hasOtherOption ? "სხვა" : chosenOption;
+    }
+    if (isMultiple) {
+      let selectedOptions = [];
+      for (let v of value) {
+        const findOption = options?.filter(
+          (option) => option.id === v
+        )?.[0]?.name;
+        selectedOptions.push(findOption);
+      }
+      return selectedOptions.join(", ") || "არ არის არჩეული";
+    }
+  };
 
   return (
     <div className="select-field">
@@ -77,15 +94,7 @@ const SelectOption = ({
           className={"select-header " + (isOpen ? "open" : "closed")}
           onClick={toggleDropdown}
         >
-          <div className="selected-option">
-            {isMultiple
-              ? value && value.length > 0
-                ? value.join(", ")
-                : "არ არის არჩეული"
-              : (hasOtherOption && "სხვა") ||
-                value ||
-                "არ არის არჩეული"}
-          </div>
+          <div className="selected-option">{selectedOptions()}</div>
           <div
             className={"select-arrow " + (isOpen ? "open" : "closed")}
           ></div>
@@ -125,17 +134,17 @@ const SelectOption = ({
               )}
               არ არის არჩეული
             </div>
-            {filteredOptions.map((option) => (
+            {filteredOptions?.map((option) => (
               <div
-                key={option}
+                key={option.name}
                 className="option"
-                onClick={() => handleSelectOption(option)}
+                onClick={() => handleSelectOption(option.id)}
               >
                 {isMultiple && (
                   <div className="checkbox-icon anim">
                     <span
                       className={
-                        value?.includes(option)
+                        value?.includes(option.id)
                           ? "icon checked"
                           : "icon unchecked"
                       }
@@ -144,7 +153,7 @@ const SelectOption = ({
                     </span>
                   </div>
                 )}
-                {option}
+                {option.name}
               </div>
             ))}
             {!isMultiple && (

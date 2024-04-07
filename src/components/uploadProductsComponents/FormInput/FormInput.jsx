@@ -29,7 +29,7 @@ const FormInput = ({
         placeholder={placeholder || ""}
         pattern={pattern || null}
       />
-      {error && <span>{error}</span>}
+      {error && <span className="error-message">{error}</span>}
     </div>
   );
 };

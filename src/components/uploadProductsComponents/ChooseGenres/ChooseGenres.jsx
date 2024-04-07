@@ -9,6 +9,7 @@ import GenreSelector from "../genreSelector/GenreSelector";
 import "./chooseGenres.css";
 // import genres from "../../../constants/genres";
 import getListGenres from "../../../services/productServices/getListGenres";
+import { TailSpin } from "react-loader-spinner";
 
 const ChooseGenres = () => {
   const dispatch = useDispatch();
@@ -32,7 +33,6 @@ const ChooseGenres = () => {
         formData.chooseCategory.length === 0) &&
       formData.chooseGenre?.length > 0
     ) {
-      console.log("Clearing formData.chooseGenre");
       dispatch(
         updateFormField({ fieldName: "chooseGenre", value: [] })
       );
@@ -55,16 +55,23 @@ const ChooseGenres = () => {
     >
       <h6 className="choose-category-title">აირჩიეთ ჟანრი</h6>
       <div className="genres">
-        {genres
-          ? genres
-              .sort()
-              .map((genre) => (
-                <GenreSelector
-                  key={genre.name + genre.genre_id}
-                  genre={genre}
-                />
-              ))
-          : null}
+        {genres ? (
+          genres
+            .sort()
+            .map((genre) => (
+              <GenreSelector
+                key={genre.name + genre.genre_id}
+                genre={genre}
+              />
+            ))
+        ) : (
+          <TailSpin
+            color="#505050"
+            height={50}
+            strokeWidth={3}
+            radius={3}
+          />
+        )}
       </div>
     </div>
   );

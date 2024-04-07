@@ -7,6 +7,7 @@ import {
   updateFormField,
 } from "../../../redux/uploadFormSlice";
 import getListCategories from "../../../services/productServices/getListCategories";
+import { TailSpin } from "react-loader-spinner";
 
 const ChooseCategory = () => {
   const dispatch = useDispatch();
@@ -57,15 +58,26 @@ const ChooseCategory = () => {
             checked={formData.chooseCategory?.includes(a.name)}
           />
         ))} */}
-        {categories?.map((a, i) => (
-          <CategorySelector
-            key={i + 1}
-            name={a.name}
-            value={a.category_id}
-            handleChange={handleChange}
-            checked={formData.chooseCategory?.includes(a.category_id)}
+        {categories ? (
+          categories.map((a, i) => (
+            <CategorySelector
+              key={i + 1}
+              name={a.name}
+              value={a.category_id}
+              handleChange={handleChange}
+              checked={formData.chooseCategory?.includes(
+                a.category_id
+              )}
+            />
+          ))
+        ) : (
+          <TailSpin
+            color="#505050"
+            height={50}
+            strokeWidth={3}
+            radius={3}
           />
-        ))}
+        )}
       </div>
     </div>
   );

@@ -34,7 +34,9 @@ export default function UploadProducts() {
     createProduct(formData, token)
       .then((res) => {
         console.log(res);
-        dispatch(resetForm());
+        if (res) {
+          dispatch(resetForm());
+        }
       })
       .finally(() => {
         setIsSubmitting(false);
@@ -48,6 +50,7 @@ export default function UploadProducts() {
         title={"დაამატე პროდუქტი"}
         subtitle={"შეავსე ინფორმაცია სრულად და დეტალურად"}
       />
+
       <ChooseCategory />
       <ChooseGenres />
       <ChooseAvailability />

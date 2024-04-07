@@ -3,14 +3,15 @@
     justify-content: space-between;
     align-items: flex-start;
     padding-right: 128px;
-    position: relative;
+    /* position: relative; */
 }
 
 .outlet {
-    position: absolute;
+    /* position: absolute; */
     inset: 0;
-    margin-left: 252px;
-    width: calc(100% - 252px - 128px);
+    /* margin-left: 252px; */
+    /* width: calc(100% - 252px - 128px); */
+    width: calc(100% - 252px);
     padding-left: 1rem;
     display: flex;
     align-items: flex-start;

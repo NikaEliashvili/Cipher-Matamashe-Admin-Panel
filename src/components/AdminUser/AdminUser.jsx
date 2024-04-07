@@ -3,15 +3,16 @@ import React from "react";
 import "./adminUser.css";
 import { ThreeDots } from "react-loader-spinner";
 import useGetUserByToken from "../../hooks/useGetUserByToken ";
+import { selectUser } from "../../redux/authSlice";
+import { useSelector } from "react-redux";
 export default function AdminUser() {
-  // const [adminUser, isLoading, error] = useGetUserByToken();
-  const [adminUser, isLoading, error] = [null, false, null];
-
+  const [adminUser, isLoading, error] = useGetUserByToken();
+  // const [adminUser, isLoading, error] = [null, false, null];
   return (
     <div className="user-container">
       <div className="user-info">
         <h4 className="user-name">
-          {isLoading ? (
+          {!adminUser ? (
             <ThreeDots
               visible={true}
               height="10"

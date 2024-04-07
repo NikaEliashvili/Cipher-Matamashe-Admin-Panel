@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import { setNewJWT } from "../../redux/authSlice";
 import matamasheApi from "../matamasheApi";
 
@@ -9,14 +8,8 @@ const refreshToken = async (token, dispatch) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    if (response.status === 200) {
-      console.log(response);
-      const newToken = response.data.token;
-      dispatch(setNewJWT(newToken));
-      console.log("Token refreshed successfully.");
-    } else {
-      console.error("Token refresh failed.");
-    }
+    const newToken = response.data.token;
+    dispatch(setNewJWT(newToken));
   } catch (error) {
     console.error("Error during token refresh:", error);
   }

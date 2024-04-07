@@ -1,5 +1,6 @@
 .sidebar {
     position: sticky;
+    position: -webkit-sticky;
     /* left: 0; */
     top: 0;
     width: 252px;

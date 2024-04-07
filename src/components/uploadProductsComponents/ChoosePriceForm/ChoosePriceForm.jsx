@@ -1,15 +1,21 @@
 import { useDispatch, useSelector } from "react-redux";
 import FormInput from "../FormInput/FormInput";
 import "./choosePriceForm.css";
-import React from "react";
+import React, { useState } from "react";
 import {
   selectFormData,
   updateFormField,
 } from "../../../redux/uploadFormSlice";
+import PRICE_NUM_REGEX from "../../../constants/priceRegex";
 
 const ChoosePriceForm = ({ formFor }) => {
   const dispatch = useDispatch();
   const formData = useSelector(selectFormData);
+  const regex = PRICE_NUM_REGEX;
+  const [error, setError] = useState({
+    name: "",
+    errorMessage: null,
+  });
 
   const takenData = {
     title: formFor === 1 ? "PlayStation 4" : "PlayStation 5",
@@ -35,12 +41,22 @@ const ChoosePriceForm = ({ formFor }) => {
     const { name, value } = e.target;
 
     if (!containsLetter(value)) {
-      dispatch(
-        updateFormField({
-          fieldName: name,
-          value: value,
-        })
-      );
+      if (regex.test(value)) {
+        if (error) {
+          setError(null);
+        }
+        dispatch(
+          updateFormField({
+            fieldName: name,
+            value,
+          })
+        );
+      } else {
+        setError({
+          name,
+          errorMessage: "დასაშვებია მხოლოდ ციფრები და წერტილი",
+        });
+      }
     }
   };
 
@@ -55,7 +71,13 @@ const ChoosePriceForm = ({ formFor }) => {
             value={takenData.valueSecondary || ""}
             handleChange={handleChange}
             name={"secondaryPrice" + (formFor === 1 ? "PS4" : "PS5")}
-            pattern="[0-9]+"
+            pattern={null}
+            error={
+              error &&
+              error?.name ===
+                "secondaryPrice" + (formFor === 1 ? "PS4" : "PS5") &&
+              error?.errorMessage
+            }
           />
           <FormInput
             label="მოგება"
@@ -65,7 +87,14 @@ const ChoosePriceForm = ({ formFor }) => {
             name={
               "secondaryPriceProfit" + (formFor === 1 ? "PS4" : "PS5")
             }
-            pattern="[0-9]+"
+            pattern={null}
+            error={
+              error &&
+              error?.name ===
+                "secondaryPriceProfit" +
+                  (formFor === 1 ? "PS4" : "PS5") &&
+              error?.errorMessage
+            }
           />
         </div>
         <div className="primary-price">
@@ -75,7 +104,13 @@ const ChoosePriceForm = ({ formFor }) => {
             value={takenData.valuePrimary || ""}
             handleChange={handleChange}
             name={"primaryPrice" + (formFor === 1 ? "PS4" : "PS5")}
-            pattern="[0-9]+"
+            pattern={null}
+            error={
+              error &&
+              error?.name ===
+                "primaryPrice" + (formFor === 1 ? "PS4" : "PS5") &&
+              error?.errorMessage
+            }
           />
           <FormInput
             label="მოგება"
@@ -85,7 +120,14 @@ const ChoosePriceForm = ({ formFor }) => {
             name={
               "primaryPriceProfit" + (formFor === 1 ? "PS4" : "PS5")
             }
-            pattern="[0-9]+"
+            pattern={null}
+            error={
+              error &&
+              error?.name ===
+                "primaryPriceProfit" +
+                  (formFor === 1 ? "PS4" : "PS5") &&
+              error?.errorMessage
+            }
           />
         </div>
       </div>

@@ -1,5 +1,5 @@
 import "./detailsAboutGame.css";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import FormInput from "../FormInput/FormInput";
 import FormTextArea from "../FormTextArea/FormTextArea";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,10 +9,14 @@ import {
 } from "../../../redux/uploadFormSlice";
 import SelectOption from "../SelectOption/SelectOption";
 import languages from "../../../constants/languages";
+import getListVoiceOverLangs from "../../../services/productServices/getListVoiceOverLangs";
+import getListSubtitlesLangs from "../../../services/productServices/getListSubtitlesLangs";
 
 const DetailsAboutGame = () => {
   const dispatch = useDispatch();
   const formData = useSelector(selectFormData);
+  const [voiceLangs, setVoiceLangs] = useState(null);
+  const [subtitleLangs, setSubtitleLangs] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -56,6 +60,24 @@ const DetailsAboutGame = () => {
       );
     }
   };
+
+  useEffect(() => {
+    const fetchVoiceLangs = async () => {
+      const data = await getListVoiceOverLangs();
+      const voiceData = data?.map((lang) => ({
+        ...lang,
+        id: lang.language_id,
+      }));
+      setVoiceLangs(voiceData);
+      const listData = await getListSubtitlesLangs();
+      const subtitlesData = listData?.map((sub) => ({
+        ...sub,
+        id: sub.subtitle_id,
+      }));
+      setSubtitleLangs(subtitlesData);
+    };
+    fetchVoiceLangs();
+  }, []);
 
   useEffect(() => {
     if (
@@ -116,7 +138,7 @@ const DetailsAboutGame = () => {
                 handleChange={handleSelect}
                 value={formData.voicingLangs}
                 name="voicingLangs"
-                options={languages}
+                options={voiceLangs || []}
                 label="გახმოვანება"
                 isMultiple="true"
               />
@@ -126,7 +148,7 @@ const DetailsAboutGame = () => {
                 handleChange={handleSelect}
                 value={formData.subtitlesLangs}
                 name="subtitlesLangs"
-                options={languages}
+                options={subtitleLangs || []}
                 label="ტიტრები"
                 isMultiple="true"
               />

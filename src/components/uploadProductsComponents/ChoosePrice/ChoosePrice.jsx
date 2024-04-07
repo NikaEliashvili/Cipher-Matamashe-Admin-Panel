@@ -38,7 +38,6 @@ const ChoosePrice = () => {
 
   useEffect(() => {
     if (formData.chooseCategory.length === 1 && !isEmptyAll) {
-      console.log("run");
       dispatch(
         resetPriceFieldsByCategory(formData.chooseCategory[0])
       );

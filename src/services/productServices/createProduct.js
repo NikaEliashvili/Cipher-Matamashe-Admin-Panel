@@ -9,12 +9,16 @@ const createProduct = async (data, token) => {
       {
         name: data.productName,
         description: data.description,
-        developer_id: 1,
+        developer_id: data.chooseDeveloper,
+        images: data.chooseImages,
         categories: data.chooseCategory,
         genres: data.chooseGenre,
-        languages: [1, 2],
-        subtitles: [1],
+        languages: data.voicingLangs,
+        subtitles: data.subtitlesLangs,
         tags: [1, 5],
+        available: data.chooseAvailability,
+        discount: parseFloat(data.discount),
+        quantity: parseInt(data.quantity),
       },
       {
         headers: {
@@ -23,10 +27,24 @@ const createProduct = async (data, token) => {
         },
       }
     );
-
+    console.log({
+      name: data.productName,
+      description: data.description,
+      developer_id: data.chooseDeveloper,
+      images: data.chooseImages,
+      categories: data.chooseCategory,
+      genres: data.chooseGenre,
+      languages: data.voicingLangs,
+      subtitles: data.subtitlesLangs,
+      tags: [1, 5],
+      available: data.chooseAvailability,
+      discount: parseFloat(data.discount),
+      quantity: parseInt(data.quantity),
+    });
+    console.log(response);
     return response;
   } catch (err) {
-  } finally {
+    console.log(err);
   }
 };
 

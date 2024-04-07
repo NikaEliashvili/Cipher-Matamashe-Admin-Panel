@@ -7,8 +7,7 @@ import {
   updateFormField,
 } from "../../../redux/uploadFormSlice";
 import FormInput from "../FormInput/FormInput";
-
-const PRICE_NUM_REGEX = /^(?!0\d)\d{0,20}(\.\d{0,2})?$/;
+import PRICE_NUM_REGEX from "../../../constants/priceRegex";
 
 const ToggleableFormField = ({
   title,

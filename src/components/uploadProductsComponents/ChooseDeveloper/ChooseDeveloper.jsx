@@ -8,29 +8,34 @@ import {
 } from "../../../redux/uploadFormSlice";
 import SelectOption from "../SelectOption/SelectOption";
 import getListDevelopers from "../../../services/productServices/getListDevelopers";
-import developersList from "../../../constants/developersList";
+// import developersList from "../../../constants/developersList";
 
 const ChooseDeveloper = () => {
   const dispatch = useDispatch();
   const formData = useSelector(selectFormData);
-  // const [developersList, setDevelopersList] = useState(null);
+  const [developersList, setDevelopersList] = useState(null);
 
   // For  fetching the list of Developers
   useEffect(() => {
     const fetchDevelopers = async () => {
       const data = await getListDevelopers();
-      if (data) {
-        // setDevelopersList(data);
-      }
+      const developersData = data.map((developer) => ({
+        ...developer,
+        id: developer.developer_id,
+      }));
+      setDevelopersList(developersData);
     };
     fetchDevelopers();
-  });
+  }, []);
 
   const handleChange = (optionValue) => {
     dispatch(
       updateFormField({
         fieldName: "chooseDeveloper",
-        value: optionValue.length > 0 ? optionValue : null,
+        value:
+          parseInt(optionValue) || optionValue.length > 0
+            ? optionValue
+            : null,
       })
     );
   };
@@ -70,7 +75,7 @@ const ChooseDeveloper = () => {
         <SelectOption
           handleChange={handleChange}
           value={formData.chooseDeveloper || ""}
-          options={developersList}
+          options={developersList || []}
         />
       </div>
     </div>

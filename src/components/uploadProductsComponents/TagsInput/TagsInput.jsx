@@ -29,7 +29,6 @@ const TagsInput = ({ label, name }) => {
   };
 
   const handleChange = (newTag) => {
-    console.log(newTag);
     if (formData.tags) {
       dispatch(
         updateFormField({

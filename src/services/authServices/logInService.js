@@ -1,4 +1,4 @@
-import { setNewJWT } from "../../redux/authSlice";
+import { setNewJWT, setUser } from "../../redux/authSlice";
 import matamasheApi from "../matamasheApi";
 
 const logInService = async (username, password, dispatch) => {

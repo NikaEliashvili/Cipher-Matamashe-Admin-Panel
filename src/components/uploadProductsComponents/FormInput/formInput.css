@@ -42,3 +42,8 @@
     box-shadow: inset 0 0 0 1px var(--input_border_color_valid);
     background-color: var(--input_background_color_valid);
 }
+
+.form-input .error-message {
+    color: rgb(209, 98, 98);
+    font-size: 0.6rem;
+}
