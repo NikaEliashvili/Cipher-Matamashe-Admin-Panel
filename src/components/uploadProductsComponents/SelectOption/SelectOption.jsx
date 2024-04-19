@@ -31,8 +31,9 @@ const SelectOption = ({
       setIsOpen(false);
       setSearchTerm("");
     } else {
-      if (option === "") {
-        handleChange(name, []);
+      if (!option) {
+        console.log(option);
+        handleChange(name, "none");
         setIsOpen(false);
         setSearchTerm("");
       } else {
@@ -117,7 +118,7 @@ const SelectOption = ({
             </div>
             <div
               className="option"
-              onClick={() => handleSelectOption("")}
+              onClick={() => handleSelectOption(null)}
             >
               {isMultiple && (
                 <div className="checkbox-icon">

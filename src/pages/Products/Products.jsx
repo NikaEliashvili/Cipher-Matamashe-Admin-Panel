@@ -12,31 +12,65 @@ import {
 } from "../../constants/productsTableData";
 import FormInput from "../../components/uploadProductsComponents/FormInput/FormInput";
 import MenuButton from "../../components/MenuButton/MenuButton";
+import getProducts from "../../services/productServices/getProducts";
+import moment from "moment";
 
 export default function Products() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [productsData, setProductsData] = useState(
-    ProductsDataExample
-  );
+  const [productsData, setProductsData] = useState(null);
   const [sortedBy, setSortedBy] = useState(null);
   const [menuItems, setMenuItems] = useState(allColumnNames);
-
-  const [dataSource, setDataSource] = useState(
-    generateDataSource(productsData)
-  );
+  const [isLoading, setIsLoading] = useState(false);
+  const [dataSource, setDataSource] = useState([]);
   const sortTableDataByKey = (key) => {
+    let sortProducts = productsData;
     if (sortedBy === key) {
-      setProductsData((prev) =>
-        prev.sort((a, b) => (a[key] < b[key] ? 1 : -1))
+      sortProducts.sort((a, b) =>
+        Number(a[key])
+          ? Number(a[key]) < Number(b[key])
+            ? 1
+            : -1
+          : a[key] < b[key]
+          ? 1
+          : -1
       );
+      // setProductsData((prev) =>
+      //   prev.sort((a, b) =>
+      //     Number(a[key])
+      //       ? Number(a[key]) < Number(b[key])
+      //         ? 1
+      //         : -1
+      //       : a[key] < b[key]
+      //       ? 1
+      //       : -1
+      //   )
+      // );
       setSortedBy(null);
     } else {
-      setProductsData((prev) =>
-        prev.sort((a, b) => (a[key] < b[key] ? -1 : 1))
+      sortProducts.sort((a, b) =>
+        Number(a[key])
+          ? Number(a[key]) < Number(b[key])
+            ? -1
+            : 1
+          : a[key] < b[key]
+          ? -1
+          : 1
       );
+      // setProductsData((prev) =>
+      //   prev.sort((a, b) =>
+      //     Number(a[key])
+      //       ? Number(a[key]) < Number(b[key])
+      //         ? -1
+      //         : 1
+      //       : a[key] < b[key]
+      //       ? -1
+      //       : 1
+      //   )
+      // );
       setSortedBy(key);
     }
-    setDataSource(generateDataSource(productsData));
+    // setDataSource(generateDataSource(productsData));
+    setDataSource(generateDataSource(sortProducts));
   };
 
   const chooseFilters = (id) => {
@@ -50,12 +84,81 @@ export default function Products() {
   };
 
   useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      const data = await getProducts();
+      const products = data
+        .map((p) => ({
+          image: p.images ? Object.values(p.images)[0] : "",
+          name: p.name,
+          category: p.categories ? Object.values(p.categories) : [],
+          genres: p.genres ? Object.values(p.genres) : [],
+          availability: p.available,
+          // Prices
+          priceV1: p.versions
+            ? Object.values(p.versions).filter(
+                (v) =>
+                  v.version === "secondaryPricePS4" ||
+                  v.version === "secondaryPrice_PlayStation 4"
+              )?.[0]?.price || 0
+            : 0,
+          profitV1: p.versions
+            ? Object.values(p.versions).filter(
+                (v) =>
+                  v.version === "primaryPricePS4" ||
+                  v.version === "primaryPrice_PlayStation 4"
+              )?.[0]?.price || 0
+            : 0,
+          priceV2: p.versions
+            ? Object.values(p.versions).filter(
+                (v) =>
+                  v.version === "secondaryPricePS5" ||
+                  v.version === "secondaryPrice_PlayStation 5"
+              )?.[0]?.price || 0
+            : 0,
+          profitV2: p.versions
+            ? Object.values(p.versions).filter(
+                (v) =>
+                  v.version === "primaryPricePS5" ||
+                  v.version === "primaryPrice_PlayStation 5"
+              )?.[0]?.price || 0
+            : 0,
+          discount: p.discount,
+          subtitles: p.subtitles ? Object.values(p.subtitles) : [],
+          description: p.description,
+          voiceover: p.languages ? Object.values(p.languages) : [],
+          views: p.views,
+          tags: p.tags ? Object.values(p.tags) : [],
+          date: moment(p.created_at),
+          quantity: p.quantity,
+          sales: p.sold,
+          ID: "#" + p.product_id,
+        }))
+        ?.sort((a, b) =>
+          moment(a.created_at) > moment(b.created_at) ? 1 : -1
+        );
+      if (products) {
+        setProductsData(products);
+        setDataSource(generateDataSource(products));
+      }
+      setIsLoading(false);
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
     const getData = setTimeout(() => {
-      const filteredData = ProductsDataExample.filter((product) =>
-        product.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      setProductsData(filteredData);
-      setDataSource(generateDataSource(filteredData));
+      setIsLoading(true);
+      if (productsData) {
+        const filteredData =
+          productsData?.filter((product) =>
+            product.name
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase())
+          ) || [];
+        setDataSource(generateDataSource(filteredData));
+        setIsLoading(false);
+      }
     }, 300);
     return () => clearTimeout(getData);
   }, [searchTerm]);
@@ -95,7 +198,12 @@ export default function Products() {
       </div>
       {columns && (
         <div className="products-table">
-          <Table columns={columns} dataSource={dataSource} />
+          <Table
+            columns={columns}
+            dataSource={dataSource}
+            maxHeight={600}
+            loading={isLoading}
+          />
         </div>
       )}
     </div>

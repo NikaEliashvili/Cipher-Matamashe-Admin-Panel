@@ -1,22 +1,66 @@
-import { useSelector } from "react-redux";
 import matamasheApi from "../matamasheApi";
-import { authToken } from "../../redux/authSlice";
 
 const createProduct = async (data, token) => {
   try {
+    let priceVersions = [];
+
+    for (const version in data.priceInputs) {
+      console.log(data.priceInputs[version], version);
+      priceVersions = [
+        ...priceVersions,
+        {
+          version: "secondaryPrice_" + version,
+          price: data.priceInputs[version].secondaryPrice
+            ? parseFloat(data.priceInputs[version].secondaryPrice)
+            : null,
+          income: data.priceInputs[version].secondaryPriceProfit
+            ? parseFloat(
+                data.priceInputs[version].secondaryPriceProfit
+              )
+            : null,
+        },
+        {
+          version: "primaryPrice_" + version,
+          price: data.priceInputs[version].primaryPrice
+            ? parseFloat(data.priceInputs[version].primaryPrice)
+            : null,
+          income: data.priceInputs[version].primaryPriceProfit
+            ? parseFloat(data.priceInputs[version].primaryPriceProfit)
+            : null,
+        },
+      ];
+    }
+
+    // console.log({
+    //   name: data.productName?.trim(),
+    //   description: data.description?.trim(),
+    //   developer_id: data.chooseDeveloper,
+    //   images: data.chooseImages,
+    //   versions: priceVersions,
+    //   categories: data.chooseCategory,
+    //   genres: data.chooseGenre,
+    //   languages: data.voicingLangs,
+    //   subtitles: data.subtitlesLangs,
+    //   tags: data.tags,
+    //   available: data.chooseAvailability?.toLowerCase(),
+    //   discount: parseFloat(data.discount),
+    //   quantity: parseInt(data.quantity),
+    // });
+
     const response = await matamasheApi.post(
       "/create-product",
       {
-        name: data.productName,
-        description: data.description,
+        name: data.productName?.trim(),
+        description: data.description?.trim(),
         developer_id: data.chooseDeveloper,
         images: data.chooseImages,
+        versions: priceVersions,
         categories: data.chooseCategory,
         genres: data.chooseGenre,
         languages: data.voicingLangs,
         subtitles: data.subtitlesLangs,
-        tags: [1, 5],
-        available: data.chooseAvailability,
+        tags: data.tags,
+        available: data.chooseAvailability?.toLowerCase(),
         discount: parseFloat(data.discount),
         quantity: parseInt(data.quantity),
       },
@@ -27,24 +71,11 @@ const createProduct = async (data, token) => {
         },
       }
     );
-    console.log({
-      name: data.productName,
-      description: data.description,
-      developer_id: data.chooseDeveloper,
-      images: data.chooseImages,
-      categories: data.chooseCategory,
-      genres: data.chooseGenre,
-      languages: data.voicingLangs,
-      subtitles: data.subtitlesLangs,
-      tags: [1, 5],
-      available: data.chooseAvailability,
-      discount: parseFloat(data.discount),
-      quantity: parseInt(data.quantity),
-    });
-    console.log(response);
+
     return response;
   } catch (err) {
     console.log(err);
+    return undefined;
   }
 };
 

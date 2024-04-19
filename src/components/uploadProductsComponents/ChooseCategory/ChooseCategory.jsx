@@ -18,9 +18,14 @@ const ChooseCategory = () => {
     const fetchedCategories = async () => {
       const data = await getListCategories();
       setCategories(data);
+      dispatch(
+        updateFormField({
+          fieldName: "allCategories",
+          value: [...data],
+        })
+      );
     };
     fetchedCategories();
-    // setCategories(fetchedCategories.data);
   }, []);
 
   const handleChange = (e) => {
@@ -49,27 +54,20 @@ const ChooseCategory = () => {
     <div className="choose-category">
       <h6 className="choose-category-title">აირჩიეთ კატეგორია</h6>
       <div className="categories">
-        {/* {data.map((a, i) => (
-          <CategorySelector
-            key={i + 1}
-            name={a.name}
-            value={a.value}
-            handleChange={handleChange}
-            checked={formData.chooseCategory?.includes(a.name)}
-          />
-        ))} */}
         {categories ? (
-          categories.map((a, i) => (
-            <CategorySelector
-              key={i + 1}
-              name={a.name}
-              value={a.category_id}
-              handleChange={handleChange}
-              checked={formData.chooseCategory?.includes(
-                a.category_id
-              )}
-            />
-          ))
+          categories
+            .sort((a, b) => (a.category_id > b.category_id ? 1 : -1))
+            .map((a, i) => (
+              <CategorySelector
+                key={i + 1}
+                name={a.name}
+                value={a.category_id}
+                handleChange={handleChange}
+                checked={formData.chooseCategory?.includes(
+                  a.category_id
+                )}
+              />
+            ))
         ) : (
           <TailSpin
             color="#505050"

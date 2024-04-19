@@ -40,6 +40,26 @@ const ChooseDeveloper = () => {
     );
   };
 
+  // useEffect(() => {
+  //   if (
+  //     (formData.chooseImages.length === 0 ||
+  //       !formData.isImagesVisible) &&
+  //     formData.chooseDeveloper
+  //   ) {
+  //     dispatch(
+  //       updateFormField({
+  //         fieldName: "chooseDeveloper",
+  //         value: "",
+  //       })
+  //     );
+  //   }
+  // }, [
+  //   formData.chooseImages,
+  //   formData.chooseDeveloper,
+  //   formData.isImagesVisible,
+  //   dispatch,
+  // ]);
+
   useEffect(() => {
     if (
       (formData.chooseImages.length === 0 ||

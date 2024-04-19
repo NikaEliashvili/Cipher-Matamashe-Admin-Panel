@@ -14,9 +14,13 @@ const uploadImage = async (token, imageFile) => {
         },
       }
     );
-    return response.data.url;
+    return typeof response.data.url === "string"
+      ? response.data.url
+      : null;
   } catch (err) {
     console.log(err);
+
+    return null;
   }
 };
 

@@ -42,7 +42,7 @@ export default function SignInForm() {
       <form onSubmit={submit} className="form">
         <Input
           errorMessage={
-            error && error.status === 404 && error.message
+            error && error.status === "username" && error.message
           }
           type="text"
           label="ლოგინი"
@@ -53,7 +53,10 @@ export default function SignInForm() {
         />
         <Input
           errorMessage={
-            error && error.status === 401 && error.message
+            error &&
+            (error.status === "password" ||
+              error.status === "unknown_status") &&
+            error.message
           }
           type={inputType}
           label="პაროლი"

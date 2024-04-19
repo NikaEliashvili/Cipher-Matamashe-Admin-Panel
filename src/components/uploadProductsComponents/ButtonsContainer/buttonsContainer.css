@@ -20,3 +20,20 @@
 .cancel-btn:hover {
     background: #C2C2C2 !important;
 }
+
+.buttons-container .upload-btn {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.buttons-container .err-msg {
+    position: absolute;
+    top: calc(100% + 0.2rem);
+    right: 0;
+    width: fit-content;
+    font-size: 0.75rem;
+    color: rgb(168, 14, 14);
+}

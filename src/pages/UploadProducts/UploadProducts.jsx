@@ -25,7 +25,7 @@ export default function UploadProducts() {
   const token = useSelector(authToken);
   const dispatch = useDispatch();
   const formData = useSelector(selectFormData);
-
+  const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onSubmit = (e) => {
@@ -36,7 +36,16 @@ export default function UploadProducts() {
         console.log(res);
         if (res) {
           dispatch(resetForm());
+        } else {
+          setError("ატვირთვისას დაფიქსირდა შეცდომა");
+          setTimeout(() => {
+            setError(null);
+          }, 3500);
         }
+      })
+      .catch((err) => {
+        setError("ატვირთვისას დაფიქსირდა შეცდომა");
+        console.log(err);
       })
       .finally(() => {
         setIsSubmitting(false);
@@ -61,7 +70,7 @@ export default function UploadProducts() {
       <ChooseQuantity />
       <DetailsAboutGame />
       <TagsContainer />
-      <ButtonsContainer isLoading={isSubmitting} />
+      <ButtonsContainer isLoading={isSubmitting} error={error} />
     </form>
   );
 }

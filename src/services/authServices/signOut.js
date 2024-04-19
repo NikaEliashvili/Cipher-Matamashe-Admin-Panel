@@ -1,4 +1,5 @@
 import { clearJWT } from "../../redux/authSlice";
+import { resetForm } from "../../redux/uploadFormSlice";
 import matamasheApi from "../matamasheApi";
 
 const signOut = async (token, dispatch) => {
@@ -9,14 +10,14 @@ const signOut = async (token, dispatch) => {
       },
     });
     // Dispatch the action directly.
-    if (response.status === 200) {
-      dispatch(clearJWT());
-    } else {
-      console.error("Logout failed.");
-    }
+    dispatch(clearJWT());
+    dispatch(resetForm());
+
     return response.data;
   } catch (error) {
     console.log(error);
+    dispatch(clearJWT());
+    dispatch(resetForm());
     throw error.response;
   }
 };

@@ -1,14 +1,23 @@
 import React from "react";
 import "./table.css";
+import { TailSpin, ThreeDots } from "react-loader-spinner";
 
-const Table = ({ columns, dataSource, scrollableX, scrollableY }) => {
+const Table = ({
+  columns,
+  dataSource,
+  maxHeight = "auto",
+  maxWidth = "auto",
+  loading,
+}) => {
   return (
-    <div className="table-container">
-      <table
-        className={`table ${scrollableX ? "scrollable-x" : ""} ${
-          scrollableY ? "scrollable-y" : ""
-        }`}
-      >
+    <div
+      className="table-container"
+      style={{
+        maxHeight: "600px ",
+        maxWidth: maxWidth,
+      }}
+    >
+      <table className={"table"}>
         <thead>
           <tr>
             {columns?.map((column) => (
@@ -20,7 +29,7 @@ const Table = ({ columns, dataSource, scrollableX, scrollableY }) => {
         </thead>
         <tbody>
           {dataSource &&
-            dataSource?.map((row, rowIndex) => (
+            dataSource.map((row, rowIndex) => (
               <tr key={rowIndex} className="table-row">
                 {columns.map((column) => (
                   <td
@@ -36,8 +45,20 @@ const Table = ({ columns, dataSource, scrollableX, scrollableY }) => {
             ))}
         </tbody>
       </table>
-      {!dataSource && (
-        <div className="no-data">პროდუქტი არაა დამატებული...</div>
+      {(dataSource?.length === 0 || !dataSource) && !loading && (
+        <div className="no-data">პროდუქტი ვერ მოიძებნა...</div>
+      )}
+      {loading && (
+        <div className="loading">
+          <ThreeDots
+            visible={true}
+            height="30"
+            width="20"
+            color="#5d5d6487"
+            radius="9"
+            wrapperClass="spinner"
+          />
+        </div>
       )}
     </div>
   );

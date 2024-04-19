@@ -1,6 +1,5 @@
 // authSlice.js
 import { createSlice } from "@reduxjs/toolkit";
-import { jwtDecode } from "jwt-decode";
 const initialState = {
   jwt: JSON.parse(localStorage.getItem("jwt")) || null,
   user: null,

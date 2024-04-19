@@ -2,12 +2,13 @@
 
 /* Style the container of the table */
 .table-container {
-    overflow-x: auto;
+    overflow: auto;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
+    scroll-behavior: smooth;
 }
 
 /* Style the table */
@@ -19,7 +20,10 @@
 
 /* Style the table header */
 .table thead {
-    position: relative;
+    position: sticky;
+    top: 0;
+    background: var(--background_color_main);
+    box-shadow: 0 2px 5px 2px rgba(0, 0, 0, 0.025);
 }
 
 .table thead th {
@@ -56,16 +60,19 @@
 
 .table tbody tr:nth-child(odd) td {
     background-color: rgba(0, 0, 0, 0.04);
+    scroll-behavior: smooth;
 }
 
 
 
-.table-container .no-data {
+.table-container .no-data,
+.table-container .loading {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
     height: 60px;
+    margin-top: 1rem;
     padding-bottom: 1rem;
     text-wrap: nowrap;
 }

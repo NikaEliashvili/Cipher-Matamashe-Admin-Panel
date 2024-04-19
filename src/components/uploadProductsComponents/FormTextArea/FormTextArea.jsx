@@ -24,7 +24,7 @@ const FormTextArea = ({
         className="form-textarea-field"
       />
 
-      {error && <span>{error}</span>}
+      {error && <span className="err-msg">{error}</span>}
     </div>
   );
 };

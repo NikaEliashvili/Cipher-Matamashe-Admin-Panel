@@ -4,10 +4,7 @@ import logInService from "../services/authServices/logInService";
 
 const useSignIn = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState({
-    status: null,
-    message: null,
-  });
+  const [error, setError] = useState(null);
   const dispatch = useDispatch();
 
   const handleSignIn = async (username, password) => {
@@ -23,9 +20,23 @@ const useSignIn = () => {
       setIsLoading(false);
       return newToken;
     } catch (err) {
+      console.log(err);
+      const error = err.data.error;
+      const errorStatus =
+        error === "Username_invalid"
+          ? "username"
+          : error === "Password_invalid"
+          ? "password"
+          : "unknown_status";
+      const errorMessage =
+        error === "Username_invalid"
+          ? "ლოგინი არასწორია"
+          : error === "Password_invalid"
+          ? "პაროლი არასწორია"
+          : "დაფიქსირდა შეცდომა";
       setError({
-        status: err.status,
-        message: err.data.error,
+        status: errorStatus,
+        message: errorMessage,
       });
     } finally {
       setIsLoading(false);

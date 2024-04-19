@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Outlet,
   Navigate,
@@ -7,16 +7,26 @@ import {
   useNavigate,
 } from "react-router-dom";
 import { authToken } from "../../redux/authSlice";
+import { selectFormData } from "../../redux/uploadFormSlice";
+import getUserByToken from "../../services/authServices/getUserByToken";
 
 export default function AuthRequired() {
   const location = useLocation();
   const navigate = useNavigate();
   const isLogged = useSelector(authToken);
+  const dispatch = useDispatch();
+  const formData = useSelector(selectFormData);
+
   useEffect(() => {
     if (!isLogged) {
       navigate("/login");
     }
-  }, [isLogged]);
+    if (isLogged) {
+      const token = isLogged;
+      getUserByToken(token, dispatch);
+    }
+  }, [isLogged, formData]);
+
   if (isLogged && location.pathname === "/login") {
     return <Navigate to={"/"} />;
   }

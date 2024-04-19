@@ -7,7 +7,7 @@ import {
   selectFormData,
 } from "../../../redux/uploadFormSlice";
 
-const ButtonsContainer = ({ isLoading }) => {
+const ButtonsContainer = ({ isLoading, error }) => {
   const dispatch = useDispatch();
   const formData = useSelector(selectFormData);
 
@@ -25,13 +25,16 @@ const ButtonsContainer = ({ isLoading }) => {
         გაუქმება
       </Button>
       {formData.tags.length ? (
-        <Button
-          classNames={"submit-btn"}
-          type={"submit"}
-          isLoading={isLoading}
-        >
-          ატვირთვა
-        </Button>
+        <div className="upload-btn">
+          <Button
+            classNames={"submit-btn"}
+            type={"submit"}
+            isLoading={isLoading}
+          >
+            ატვირთვა
+          </Button>
+          {error && <span className="err-msg">{error}</span>}
+        </div>
       ) : null}
     </div>
   );

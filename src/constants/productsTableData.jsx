@@ -97,6 +97,10 @@ export const ProductsDataExample = [
   },
 ];
 
+const handleError = (e) => {
+  e.target.style.opacity = 0;
+};
+
 export const allColumnNames = [
   { id: "1", key: "image", isChecked: true, title: "სურათი" },
   { id: "2", key: "name", isChecked: true, title: "სახელი" },
@@ -145,56 +149,62 @@ export const allColumnNames = [
 ];
 
 export const generateDataSource = (data) => {
-  return data.map((product) => ({
+  return data?.map((product) => ({
     image: (
       <div className="game-image">
-        <img src={product.image} alt={product.name} />
+        <img src={product?.image} alt={""} onError={handleError} />
       </div>
     ),
-    name: <span className="game-name width-140">{product.name}</span>,
+    name: (
+      <span className="game-name width-140">{product?.name}</span>
+    ),
     category: (
       <div className="categories">
-        {product.category.map((category, indx) => (
-          <span
-            key={category + indx}
-            className={
-              (category === "PS5" && "PS5") ||
-              (category === "PS4" && "PS4") ||
-              ""
-            }
-          >
-            {category}
-          </span>
-        ))}
+        {product?.category ? (
+          product?.category?.map((category, indx) => (
+            <span
+              key={category + indx}
+              className={
+                (category === "PlayStation 5" && "PS5") ||
+                (category === "PlayStation 4" && "PS4") ||
+                ""
+              }
+            >
+              {category}
+            </span>
+          ))
+        ) : (
+          <span></span>
+        )}
       </div>
     ),
     availability: (
-      <span className="availability">{product.availability}</span>
+      <span className="availability">{product?.availability}</span>
     ),
-    priceV1: <span className="price">{product.priceV1}</span>,
-    profitV1: <span className="profit">{product.profitV1}</span>,
-    priceV2: <span className="price">{product.priceV2}</span>,
-    profitV2: <span className="profit">{product.profitV2}</span>,
-    discount: <span className="discount">{product.discount}</span>,
+    priceV1: <span className="price">{product?.priceV1}</span>,
+    profitV1: <span className="profit">{product?.profitV1}</span>,
+    priceV2: <span className="price">{product?.priceV2}</span>,
+    profitV2: <span className="profit">{product?.profitV2}</span>,
+    discount: <span className="discount">{product?.discount}</span>,
     subtitles: (
       <span className="small-text width-140">
-        {product.subtitles.join(", ")}
+        {product?.subtitles?.join(", ")}
       </span>
     ),
     description: (
       <div className="small-text width-140">
-        {product.description}
+        {product?.description}
       </div>
     ),
     voiceover: (
       <span className="small-text width-140">
-        {product.voiceover.join(", ")}
+        {product?.voiceover?.join(", ")}
       </span>
     ),
-    views: <span className="medium-text">{product.views}</span>,
+    views: <span className="medium-text">{product?.views}</span>,
     tags: (
       <div className="tags">
-        {product.tags.map((tag, index) => (
+        {product?.tags?.map((tag, index) => (
           <span key={tag + index} className="tag">
             #{tag}
           </span>
@@ -203,15 +213,17 @@ export const generateDataSource = (data) => {
     ),
     date: (
       <span className="medium-text width-100">
-        {product.date?.format("M/D/YYYY HH:mm")}
+        {product?.date?.format("M/D/YYYY HH:mm")}
       </span>
     ),
-    quantity: <span className="medium-text">{product.quantity}</span>,
+    quantity: (
+      <span className="medium-text">{product?.quantity}</span>
+    ),
     sales: (
-      <span className="medium-text width-100">{product.sales}</span>
+      <span className="medium-text width-100">{product?.sales}</span>
     ),
 
-    ID: <span className="big-text width-100">{product.ID}</span>,
+    ID: <span className="big-text width-100">{product?.ID}</span>,
     tools: (
       <div className="table-tools">
         <button className="table-btn-edit">
@@ -237,7 +249,7 @@ export const generateColumns = (
 ) => {
   const columns = allColumnNames
     .filter((item) => item.isChecked)
-    .map(({ key, title }) => {
+    ?.map(({ key, title }) => {
       let columnTitle;
 
       switch (key) {

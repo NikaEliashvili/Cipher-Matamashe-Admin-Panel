@@ -11,30 +11,18 @@ import ChoosePriceForm from "../ChoosePriceForm/ChoosePriceForm";
 const ChoosePrice = () => {
   const dispatch = useDispatch();
   const formData = useSelector(selectFormData);
-  const formFor =
-    [...formData.chooseCategory].sort() || formData.chooseCategory;
+  const formFor = formData.chooseCategory;
 
-  const isEmptyAll = !(
-    formData.secondaryPricePS4 ||
-    formData.secondaryPricePS5 ||
-    formData.secondaryPriceProfitPS4 ||
-    formData.secondaryPriceProfitPS5 ||
-    formData.primaryPricePS4 ||
-    formData.primaryPricePS5 ||
-    formData.primaryPriceProfitPS4 ||
-    formData.primaryPriceProfitPS5
+  const isEmptyAll = Object.values(formData.priceInputs).every(
+    (priceInput) =>
+      Object.values(priceInput).every((value) => value === null)
   );
 
   useEffect(() => {
     if (!formData.chooseAvailability && !isEmptyAll) {
       dispatch(resetPriceFields());
     }
-  }, [
-    formData.chooseAvailability,
-    formData.chooseCategory,
-    isEmptyAll,
-    dispatch,
-  ]);
+  }, [formData.chooseAvailability, isEmptyAll, dispatch]);
 
   useEffect(() => {
     if (formData.chooseCategory.length === 1 && !isEmptyAll) {
@@ -42,9 +30,7 @@ const ChoosePrice = () => {
         resetPriceFieldsByCategory(formData.chooseCategory[0])
       );
     }
-  }, [formData.chooseCategory, dispatch]);
-
-  /* ------------ */
+  }, [formData.chooseCategory, isEmptyAll, dispatch]);
 
   if (formData.chooseAvailability === null) {
     return null;
@@ -54,8 +40,9 @@ const ChoosePrice = () => {
     <div className="choose-price">
       <h6 className="choose-category-title">შეიყვანეთ ფასი</h6>
       <div className="price-forms">
-        {formFor &&
-          formFor.map((a) => <ChoosePriceForm key={a} formFor={a} />)}
+        {formFor.map((category) => (
+          <ChoosePriceForm key={category} formFor={category} />
+        ))}
       </div>
     </div>
   );

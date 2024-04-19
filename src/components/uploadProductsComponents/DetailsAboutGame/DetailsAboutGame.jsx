@@ -17,15 +17,26 @@ const DetailsAboutGame = () => {
   const formData = useSelector(selectFormData);
   const [voiceLangs, setVoiceLangs] = useState(null);
   const [subtitleLangs, setSubtitleLangs] = useState(null);
+  const [descError, setDescError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    dispatch(
-      updateFormField({
-        fieldName: name,
-        value,
-      })
-    );
+    // console.log(name, value);
+
+    if (name === "description" && value?.length > 5000) {
+      setDescError("დასაშვებია მაქს. 5000 სიმბოლო");
+    } else {
+      if (descError) {
+        setDescError(null);
+      }
+
+      dispatch(
+        updateFormField({
+          fieldName: name,
+          value,
+        })
+      );
+    }
   };
 
   const handleSelect = (name, option) => {
@@ -161,6 +172,7 @@ const DetailsAboutGame = () => {
               name="description"
               value={formData.description || ""}
               handleChange={handleChange}
+              error={descError}
             />
           </div>
         </div>
