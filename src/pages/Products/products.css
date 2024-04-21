@@ -276,3 +276,64 @@
 .products-table .table .table-tools .table-btn-delete:hover .trash-icon {
     filter: brightness(30);
 }
+
+
+
+
+.products-table .update-loading {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: +1000;
+}
+
+.modal-header {
+    padding-right: 2.3rem !important;
+}
+
+
+.modal-buttons-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+
+.modal-close-btn,
+.modal-delete-btn {
+    margin-top: 2rem;
+    padding: 0.7rem 1.5rem;
+}
+
+
+
+.modal-delete-btn {
+    background-color: #EA3838;
+    color: white;
+}
+
+.modal-close-btn {
+    background-color: #c8c8c9;
+    color: black;
+}
+
+.modal-close-btn:hover {
+    background-color: #c8c8c9 !important;
+}
+
+.modal-delete-btn:hover {
+    background-color: #EA3838 !important;
+}
+
+.modal-close-btn:hover,
+.modal-delete-btn:hover {
+    filter: opacity(0.85);
+}
+
+.products-table .update-loading .spinner {
+    filter: brightness(0);
+}

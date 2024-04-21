@@ -148,7 +148,11 @@ export const allColumnNames = [
   { id: "19", key: "tools", isChecked: true, title: "ხელსაწყოები" },
 ];
 
-export const generateDataSource = (data) => {
+export const generateDataSource = (
+  data,
+  deleteProduct,
+  updateProduct
+) => {
   return data?.map((product) => ({
     image: (
       <div className="game-image">
@@ -167,7 +171,7 @@ export const generateDataSource = (data) => {
               className={
                 (category === "PlayStation 5" && "PS5") ||
                 (category === "PlayStation 4" && "PS4") ||
-                ""
+                "PS4"
               }
             >
               {category}
@@ -226,11 +230,14 @@ export const generateDataSource = (data) => {
     ID: <span className="big-text width-100">{product?.ID}</span>,
     tools: (
       <div className="table-tools">
-        <button className="table-btn-edit">
+        <button onClick={updateProduct} className="table-btn-edit">
           <img src={EditIcon} alt="edit" className="edit-icon" />
           რედაქტირება
         </button>
-        <button className="table-btn-delete">
+        <button
+          onClick={() => deleteProduct(product?.productID)}
+          className="table-btn-delete"
+        >
           <img
             src={TrashGrayIcon}
             alt="delete"

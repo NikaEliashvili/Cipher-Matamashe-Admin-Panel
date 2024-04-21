@@ -7,6 +7,9 @@
   scroll-behavior: smooth;
 }
 
+*:focus {
+  outline: none;
+}
 
 :root {
   font-family: Mersad, sans-serif;

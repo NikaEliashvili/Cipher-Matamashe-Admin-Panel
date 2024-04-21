@@ -5,23 +5,42 @@ import PageHeader from "../../components/PageHeader/PageHeader";
 import Table from "../../components/Table/Table";
 
 import {
-  ProductsDataExample,
   allColumnNames,
   generateColumns,
   generateDataSource,
 } from "../../constants/productsTableData";
-import FormInput from "../../components/uploadProductsComponents/FormInput/FormInput";
 import MenuButton from "../../components/MenuButton/MenuButton";
 import getProducts from "../../services/productServices/getProducts";
 import moment from "moment";
+import deleteProduct from "../../services/productServices/deleteProduct";
+import { useDispatch, useSelector } from "react-redux";
+import { authToken } from "../../redux/authSlice";
+import { ThreeDots } from "react-loader-spinner";
+import DeleteProductModal from "../../modals/deleteProductModal/DeleteProductModal";
+import { closeModal, openModal } from "../../redux/modalSlice";
+import Button from "../../components/Button/Button";
 
 export default function Products() {
+  const token = useSelector(authToken);
   const [searchTerm, setSearchTerm] = useState("");
   const [productsData, setProductsData] = useState(null);
   const [sortedBy, setSortedBy] = useState(null);
   const [menuItems, setMenuItems] = useState(allColumnNames);
   const [isLoading, setIsLoading] = useState(false);
   const [dataSource, setDataSource] = useState([]);
+  const [updateProducts, setUpdateProducts] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState(null);
+  const dispatch = useDispatch();
+  const handleOpenModal = (productID) => {
+    setSelectedProductId(productID);
+    dispatch(openModal());
+  };
+
+  const handleCloseModal = () => {
+    dispatch(closeModal());
+  };
+
   const sortTableDataByKey = (key) => {
     let sortProducts = productsData;
     if (sortedBy === key) {
@@ -34,17 +53,6 @@ export default function Products() {
           ? 1
           : -1
       );
-      // setProductsData((prev) =>
-      //   prev.sort((a, b) =>
-      //     Number(a[key])
-      //       ? Number(a[key]) < Number(b[key])
-      //         ? 1
-      //         : -1
-      //       : a[key] < b[key]
-      //       ? 1
-      //       : -1
-      //   )
-      // );
       setSortedBy(null);
     } else {
       sortProducts.sort((a, b) =>
@@ -56,21 +64,17 @@ export default function Products() {
           ? -1
           : 1
       );
-      // setProductsData((prev) =>
-      //   prev.sort((a, b) =>
-      //     Number(a[key])
-      //       ? Number(a[key]) < Number(b[key])
-      //         ? -1
-      //         : 1
-      //       : a[key] < b[key]
-      //       ? -1
-      //       : 1
-      //   )
-      // );
+
       setSortedBy(key);
     }
-    // setDataSource(generateDataSource(productsData));
-    setDataSource(generateDataSource(sortProducts));
+    setDataSource(
+      generateDataSource(
+        sortProducts,
+        // hanldeDelete,
+        handleOpenModal,
+        handleUpdateProduct
+      )
+    );
   };
 
   const chooseFilters = (id) => {
@@ -81,6 +85,28 @@ export default function Products() {
           : item
       )
     );
+  };
+
+  const handleUpdateProduct = () => {
+    console.log("Function is not ready yet...");
+  };
+
+  const hanldeDelete = async () => {
+    try {
+      setIsDeleting(true);
+      const response = await deleteProduct(selectedProductId, token);
+      if (response.data) {
+        console.log(response.data);
+        setSelectedProductId(null);
+        dispatch(closeModal());
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setTimeout(() => {
+        setIsDeleting(false);
+      }, 700);
+    }
   };
 
   useEffect(() => {
@@ -103,11 +129,13 @@ export default function Products() {
               )?.[0]?.price || 0
             : 0,
           profitV1: p.versions
-            ? Object.values(p.versions).filter(
+            ? "+" +
+              (Object.values(p.versions).filter(
                 (v) =>
                   v.version === "primaryPricePS4" ||
                   v.version === "primaryPrice_PlayStation 4"
-              )?.[0]?.price || 0
+              )?.[0]?.price || 0) +
+              "₾"
             : 0,
           priceV2: p.versions
             ? Object.values(p.versions).filter(
@@ -117,13 +145,15 @@ export default function Products() {
               )?.[0]?.price || 0
             : 0,
           profitV2: p.versions
-            ? Object.values(p.versions).filter(
+            ? "+" +
+              (Object.values(p.versions).filter(
                 (v) =>
                   v.version === "primaryPricePS5" ||
                   v.version === "primaryPrice_PlayStation 5"
-              )?.[0]?.price || 0
+              )?.[0]?.price || 0) +
+              "₾"
             : 0,
-          discount: p.discount,
+          discount: "-" + (p.discount || 0) + "₾",
           subtitles: p.subtitles ? Object.values(p.subtitles) : [],
           description: p.description,
           voiceover: p.languages ? Object.values(p.languages) : [],
@@ -133,18 +163,26 @@ export default function Products() {
           quantity: p.quantity,
           sales: p.sold,
           ID: "#" + p.product_id,
+          productID: p.product_id,
         }))
         ?.sort((a, b) =>
           moment(a.created_at) > moment(b.created_at) ? 1 : -1
         );
       if (products) {
         setProductsData(products);
-        setDataSource(generateDataSource(products));
+        setDataSource(
+          generateDataSource(
+            products,
+            // hanldeDelete,
+            handleOpenModal,
+            handleUpdateProduct
+          )
+        );
       }
       setIsLoading(false);
     };
     fetchData();
-  }, []);
+  }, [updateProducts]);
 
   useEffect(() => {
     const getData = setTimeout(() => {
@@ -156,9 +194,16 @@ export default function Products() {
               .toLowerCase()
               .includes(searchTerm.toLowerCase())
           ) || [];
-        setDataSource(generateDataSource(filteredData));
-        setIsLoading(false);
+        setDataSource(
+          generateDataSource(
+            filteredData,
+            // hanldeDelete,
+            handleOpenModal,
+            handleUpdateProduct
+          )
+        );
       }
+      setIsLoading(false);
     }, 300);
     return () => clearTimeout(getData);
   }, [searchTerm]);
@@ -201,9 +246,40 @@ export default function Products() {
           <Table
             columns={columns}
             dataSource={dataSource}
-            maxHeight={600}
             loading={isLoading}
+            updateLoading={isDeleting}
           />
+          <DeleteProductModal>
+            <h4 className="modal-header">
+              გსურთ #{selectedProductId} პროდუქტის წაშლა?
+            </h4>
+            <div className="modal-buttons-container">
+              <Button
+                onClick={handleCloseModal}
+                classNames={"modal-close-btn"}
+              >
+                დახურვა
+              </Button>
+              <Button
+                onClick={hanldeDelete}
+                classNames={"modal-delete-btn"}
+              >
+                წაშლა
+              </Button>
+            </div>
+          </DeleteProductModal>
+          {isDeleting && (
+            <div className="update-loading">
+              <ThreeDots
+                visible={true}
+                height="30"
+                width="20"
+                color="#5d5d6487"
+                radius="9"
+                wrapperClass="spinner"
+              />
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -1,19 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import "./table.css";
 import { TailSpin, ThreeDots } from "react-loader-spinner";
 
 const Table = ({
   columns,
   dataSource,
-  maxHeight = "auto",
+  maxHeight = "calc(100vh - 350px)",
   maxWidth = "auto",
   loading,
+  updateLoading,
 }) => {
+  const [focusedRow, setFocusedRow] = useState(null);
+
+  const handleClickOnRow = (rowIndex) => {
+    setFocusedRow((prev) => (prev === rowIndex ? null : rowIndex));
+  };
+
   return (
     <div
-      className="table-container"
+      className={
+        "table-container " + (updateLoading ? "block_overflow" : "")
+      }
       style={{
-        maxHeight: "600px ",
+        maxHeight: maxHeight,
         maxWidth: maxWidth,
       }}
     >
@@ -30,7 +39,14 @@ const Table = ({
         <tbody>
           {dataSource &&
             dataSource.map((row, rowIndex) => (
-              <tr key={rowIndex} className="table-row">
+              <tr
+                key={rowIndex}
+                onClick={() => handleClickOnRow(rowIndex)}
+                className={
+                  "table-row " +
+                  (focusedRow === rowIndex && "focused")
+                }
+              >
                 {columns.map((column) => (
                   <td
                     key={`${rowIndex}-${column.key}`}
@@ -45,10 +61,10 @@ const Table = ({
             ))}
         </tbody>
       </table>
-      {(dataSource?.length === 0 || !dataSource) && !loading && (
+      {dataSource?.length === 0 && !loading && (
         <div className="no-data">პროდუქტი ვერ მოიძებნა...</div>
       )}
-      {loading && (
+      {loading && dataSource?.length === 0 && (
         <div className="loading">
           <ThreeDots
             visible={true}
