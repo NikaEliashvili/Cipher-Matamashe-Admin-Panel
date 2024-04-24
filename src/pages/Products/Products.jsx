@@ -43,29 +43,31 @@ export default function Products() {
 
   const sortTableDataByKey = (key) => {
     let sortProducts = productsData;
-    if (sortedBy === key) {
-      sortProducts.sort((a, b) =>
-        Number(a[key])
-          ? Number(a[key]) < Number(b[key])
+    if (sortProducts) {
+      if (sortedBy === key) {
+        sortProducts.sort((a, b) =>
+          Number(a[key])
+            ? Number(a[key]) < Number(b[key])
+              ? 1
+              : -1
+            : a[key] < b[key]
             ? 1
             : -1
-          : a[key] < b[key]
-          ? 1
-          : -1
-      );
-      setSortedBy(null);
-    } else {
-      sortProducts.sort((a, b) =>
-        Number(a[key])
-          ? Number(a[key]) < Number(b[key])
+        );
+        setSortedBy(null);
+      } else {
+        sortProducts.sort((a, b) =>
+          Number(a[key])
+            ? Number(a[key]) < Number(b[key])
+              ? -1
+              : 1
+            : a[key] < b[key]
             ? -1
             : 1
-          : a[key] < b[key]
-          ? -1
-          : 1
-      );
+        );
 
-      setSortedBy(key);
+        setSortedBy(key);
+      }
     }
     setDataSource(
       generateDataSource(
@@ -79,7 +81,7 @@ export default function Products() {
 
   const chooseFilters = (id) => {
     setMenuItems((prev) =>
-      prev.map((item) =>
+      prev?.map((item) =>
         item.id === id
           ? { ...item, isChecked: !item.isChecked }
           : item
@@ -114,7 +116,7 @@ export default function Products() {
       setIsLoading(true);
       const data = await getProducts();
       const products = data
-        .map((p) => ({
+        ?.map((p) => ({
           image: p.images ? Object.values(p.images)[0] : "",
           name: p.name,
           category: p.categories ? Object.values(p.categories) : [],
