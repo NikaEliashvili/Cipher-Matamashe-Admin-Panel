@@ -1,12 +1,12 @@
 import matamasheApi from "../matamasheApi";
 
-const getProducts = async () => {
+const getProducts = async (page = 1, limit = 5) => {
   try {
-    const response = await matamasheApi.get("/list-products");
-    console.log(response);
-    const data = JSON.parse(JSON.stringify(response.data));
-    console.log(data);
-    return data.products;
+    const response = await matamasheApi.get(
+      `/list-products?page=${page}&limit=${limit}`
+    );
+    // console.log(response);
+    return response.data;
   } catch (err) {
     console.log(err);
     return [];

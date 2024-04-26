@@ -15,7 +15,7 @@
 
 .modal {
     position: relative;
-    background-color: #fff;
+    background-color: var(--background_color_main);
     border-radius: 5px;
     box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.125);
     padding: 20px;
@@ -37,4 +37,11 @@
 
 .modal-close:hover {
     filter: opacity(0.8);
+}
+
+.modal-header {
+    padding-right: 2.3rem !important;
+    color: var(--font_color_dark_blue);
+    margin: 0;
+    margin-bottom: 1rem;
 }

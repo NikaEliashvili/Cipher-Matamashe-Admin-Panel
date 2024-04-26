@@ -7,7 +7,12 @@ import { closeModal } from "../../redux/modalSlice";
 
 import { MdOutlineClose } from "react-icons/md";
 
-const DeleteProductModal = ({ children }) => {
+const DeleteProductModal = ({
+  title,
+  maxWidth,
+  maxHeigth,
+  children,
+}) => {
   const isOpen = useSelector((state) => state.modal.isOpen);
   const dispatch = useDispatch();
   const ref = useRef(null);
@@ -33,10 +38,15 @@ const DeleteProductModal = ({ children }) => {
   return isOpen
     ? createPortal(
         <div className="modal-overlay">
-          <div className="modal" ref={ref}>
+          <div
+            className="modal"
+            ref={ref}
+            style={{ maxWidth: maxWidth, maxHeight: maxHeigth }}
+          >
             <button className="modal-close" onClick={handleClose}>
               <MdOutlineClose size={30} />
             </button>
+            <h3 className="modal-header">{title || null}</h3>
             <div className="content">{children}</div>
           </div>
         </div>,

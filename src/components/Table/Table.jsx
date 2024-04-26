@@ -8,14 +8,13 @@ const Table = ({
   dataSource,
   maxHeight = "calc(100vh - 450px)",
   maxWidth = "auto",
+  minHeight = "400px",
   loading,
   pagination = true,
   updateLoading,
-  currentPage = 2,
-  maxPage = 30,
-  handlePagination = () => {
-    console.log(currentPage + 1);
-  },
+  currentPage = 1,
+  maxPage = 1,
+  handlePagination = () => {},
 }) => {
   const [focusedRow, setFocusedRow] = useState(null);
   const [activePage, setActivePage] = useState(currentPage);
@@ -26,40 +25,53 @@ const Table = ({
     setFocusedRow((prev) => (prev === rowIndex ? null : rowIndex));
   };
 
-  const nextPage = () => {
-    setActivePage((prev) => (prev < maxPage ? prev + 1 : prev));
-  };
-
-  const prevPage = () => {
-    setActivePage((prev) => (prev > 1 ? prev - 1 : prev));
-  };
-
   const choosePage = (page) => {
     if (page >= 1 && page <= maxPage) {
       setActivePage(page);
+      handlePagination(page);
     }
   };
 
-  const pagesSlice = allPages.slice(
-    activePage > maxPage - 3
-      ? maxPage - 5
-      : activePage >= 3
-      ? activePage - 3
-      : 0,
-    activePage <= 3 ? activePage + (5 - activePage) : activePage + 2
-  );
+  // console.log(maxPage);
+  const pagesSlice =
+    maxPage > 10
+      ? allPages.slice(
+          activePage > maxPage - 3
+            ? maxPage - 5
+            : activePage >= 3
+            ? activePage - 3
+            : 0,
+          activePage <= 3
+            ? activePage + (5 - activePage)
+            : activePage + 2
+        )
+      : allPages;
 
   return (
     <div className="table-container-pagination">
       <div
         className={
-          "table-container " + (updateLoading ? "block_overflow" : "")
+          "table-container " +
+          (updateLoading || loading ? "block_overflow" : "")
         }
         style={{
           maxHeight: maxHeight,
           maxWidth: maxWidth,
+          minHeight: minHeight,
         }}
       >
+        {updateLoading && (
+          <div className="update-loading">
+            <ThreeDots
+              visible={true}
+              height="40"
+              width="20"
+              color="#404041"
+              radius="9"
+              wrapperClass="spinner"
+            />
+          </div>
+        )}
         <table className={"table"}>
           <thead>
             <tr>
@@ -75,18 +87,21 @@ const Table = ({
               dataSource.map((row, rowIndex) => (
                 <tr
                   key={rowIndex}
-                  onClick={() => handleClickOnRow(rowIndex)}
                   className={
                     "table-row " +
-                    (focusedRow === rowIndex && "focused")
+                    (focusedRow === row.ID && "focused")
                   }
+                  onClick={() => handleClickOnRow(row.ID)}
                 >
                   {columns.map((column) => (
                     <td
                       key={`${rowIndex}-${column.key}`}
                       className="table-cell"
                     >
-                      <div className="table-cell-content">
+                      <div
+                        onClick={(e) => e.stopPropagation()}
+                        className="table-cell-content"
+                      >
                         {row[column.dataIndex] || null}
                       </div>
                     </td>
@@ -95,7 +110,7 @@ const Table = ({
               ))}
           </tbody>
         </table>
-        {dataSource?.length === 0 && !loading && (
+        {dataSource.length === 0 && !loading && (
           <div className="no-data">პროდუქტი ვერ მოიძებნა...</div>
         )}
         {loading && dataSource?.length === 0 && (
@@ -115,7 +130,7 @@ const Table = ({
         <div className="pagination-buttons">
           <button
             disabled={activePage === 1}
-            onClick={prevPage}
+            onClick={() => choosePage(activePage - 1)}
             className="pagination-btn"
           >
             <IoIosArrowBack size={22} />
@@ -153,7 +168,7 @@ const Table = ({
 
           <button
             disabled={activePage === maxPage}
-            onClick={nextPage}
+            onClick={() => choosePage(activePage + 1)}
             className="pagination-btn"
           >
             <IoIosArrowBack

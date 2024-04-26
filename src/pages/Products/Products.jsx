@@ -1,6 +1,11 @@
 import "./products.css";
 
-import React, { useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import PageHeader from "../../components/PageHeader/PageHeader";
 import Table from "../../components/Table/Table";
 
@@ -28,10 +33,15 @@ export default function Products() {
   const [menuItems, setMenuItems] = useState(allColumnNames);
   const [isLoading, setIsLoading] = useState(false);
   const [dataSource, setDataSource] = useState([]);
-  const [updateProducts, setUpdateProducts] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [page, setPage] = useState(1);
+  const [productsTotalAmount, setProductsTotalAmount] = useState(1);
+  const [isUpdating, setIsUpdating] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState(null);
+  const [cachedPages, setCachedPages] = useState(null);
   const dispatch = useDispatch();
+
+  const PAGE_LIMIT = 3;
+
   const handleOpenModal = (productID) => {
     setSelectedProductId(productID);
     dispatch(openModal());
@@ -45,26 +55,54 @@ export default function Products() {
     let sortProducts = productsData;
     if (sortProducts) {
       if (sortedBy === key) {
-        sortProducts.sort((a, b) =>
-          Number(a[key])
-            ? Number(a[key]) < Number(b[key])
+        sortProducts.sort((a, b) => {
+          let valueA = a[key];
+          let valueB = b[key];
+          if (key === "priceV1" || key === "priceV2") {
+            valueA = valueA.slice(0, -1);
+            valueB = valueB.slice(0, -1);
+          }
+          if (
+            key === "profitV1" ||
+            key === "profitV2" ||
+            key === "discount"
+          ) {
+            valueA = valueA.slice(1, -1);
+            valueB = valueB.slice(1, -1);
+          }
+          return Number(valueA)
+            ? Number(valueA) < Number(valueB)
               ? 1
               : -1
-            : a[key] < b[key]
+            : valueA < valueB
             ? 1
-            : -1
-        );
+            : -1;
+        });
         setSortedBy(null);
       } else {
-        sortProducts.sort((a, b) =>
-          Number(a[key])
-            ? Number(a[key]) < Number(b[key])
+        sortProducts.sort((a, b) => {
+          let valueA = a[key];
+          let valueB = b[key];
+          if (key === "priceV1" || key === "priceV2") {
+            valueA = valueA.slice(0, -1);
+            valueB = valueB.slice(0, -1);
+          }
+          if (
+            key === "profitV1" ||
+            key === "profitV2" ||
+            key === "discount"
+          ) {
+            valueA = valueA.slice(1, -1);
+            valueB = valueB.slice(1, -1);
+          }
+          return Number(valueA)
+            ? Number(valueA) < Number(valueB)
               ? -1
               : 1
-            : a[key] < b[key]
+            : valueA < valueB
             ? -1
-            : 1
-        );
+            : 1;
+        });
 
         setSortedBy(key);
       }
@@ -72,7 +110,6 @@ export default function Products() {
     setDataSource(
       generateDataSource(
         sortProducts,
-        // hanldeDelete,
         handleOpenModal,
         handleUpdateProduct
       )
@@ -95,27 +132,57 @@ export default function Products() {
 
   const hanldeDelete = async () => {
     try {
-      setIsDeleting(true);
+      setIsUpdating(true);
       const response = await deleteProduct(selectedProductId, token);
       if (response.data) {
         console.log(response.data);
         setSelectedProductId(null);
+        setCachedPages((prev) => ({
+          ...prev,
+          [page]: null,
+        }));
         dispatch(closeModal());
       }
     } catch (err) {
       console.log(err);
     } finally {
       setTimeout(() => {
-        setIsDeleting(false);
+        setIsUpdating(false);
       }, 700);
     }
   };
 
+  const handlePagination = async (page) => {
+    setPage(page);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true);
-      const data = await getProducts();
-      const products = data
+      if (productsData) {
+        setIsUpdating(true);
+      } else {
+        setIsLoading(true);
+      }
+
+      const cachedData = cachedPages?.[page];
+      if (cachedData) {
+        setProductsData(cachedData);
+        setDataSource(
+          generateDataSource(
+            cachedData,
+            handleOpenModal,
+            handleUpdateProduct
+          )
+        );
+        setIsLoading(false);
+        setIsUpdating(false);
+        return;
+      }
+      const data = await getProducts(page, PAGE_LIMIT);
+      if (data && data.total && data.total !== productsTotalAmount) {
+        setProductsTotalAmount(data?.total);
+      }
+      const products = data?.products
         ?.map((p) => ({
           image: p.images ? Object.values(p.images)[0] : "",
           name: p.name,
@@ -124,11 +191,11 @@ export default function Products() {
           availability: p.available,
           // Prices
           priceV1: p.versions
-            ? Object.values(p.versions).filter(
+            ? (Object.values(p.versions).filter(
                 (v) =>
                   v.version === "secondaryPricePS4" ||
                   v.version === "secondaryPrice_PlayStation 4"
-              )?.[0]?.price || 0
+              )?.[0]?.price || 0) + "₾"
             : 0,
           profitV1: p.versions
             ? "+" +
@@ -140,11 +207,11 @@ export default function Products() {
               "₾"
             : 0,
           priceV2: p.versions
-            ? Object.values(p.versions).filter(
+            ? (Object.values(p.versions).filter(
                 (v) =>
                   v.version === "secondaryPricePS5" ||
                   v.version === "secondaryPrice_PlayStation 5"
-              )?.[0]?.price || 0
+              )?.[0]?.price || 0) + "₾"
             : 0,
           profitV2: p.versions
             ? "+" +
@@ -171,20 +238,28 @@ export default function Products() {
           moment(a.created_at) > moment(b.created_at) ? 1 : -1
         );
       if (products) {
+        // Cache the fetched data
+        setCachedPages((prevCachedPages) => ({
+          ...prevCachedPages,
+          [page]: products,
+        }));
+
         setProductsData(products);
         setDataSource(
           generateDataSource(
             products,
-            // hanldeDelete,
             handleOpenModal,
             handleUpdateProduct
           )
         );
       }
-      setIsLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+        setIsUpdating(false);
+      }, 1000);
     };
     fetchData();
-  }, [updateProducts]);
+  }, [page, cachedPages]);
 
   useEffect(() => {
     const getData = setTimeout(() => {
@@ -199,7 +274,6 @@ export default function Products() {
         setDataSource(
           generateDataSource(
             filteredData,
-            // hanldeDelete,
             handleOpenModal,
             handleUpdateProduct
           )
@@ -210,7 +284,15 @@ export default function Products() {
     return () => clearTimeout(getData);
   }, [searchTerm]);
 
-  const columns = generateColumns(menuItems, sortTableDataByKey);
+  // Generate columns
+  const columns = useMemo(
+    () => generateColumns(menuItems, sortTableDataByKey),
+    [dataSource]
+  );
+  // Calculate amount of max pages
+  const maxPages = useMemo(() => {
+    return Math.ceil(productsTotalAmount / PAGE_LIMIT);
+  }, [productsTotalAmount]);
   return (
     <div className="products-page">
       <div className="header">
@@ -246,15 +328,16 @@ export default function Products() {
       {columns && (
         <div className="products-table">
           <Table
-            columns={columns}
+            columns={Array(columns) ? columns : []}
             dataSource={dataSource}
             loading={isLoading}
-            updateLoading={isDeleting}
+            updateLoading={isUpdating}
+            maxPage={maxPages}
+            handlePagination={handlePagination}
           />
-          <DeleteProductModal>
-            <h4 className="modal-header">
-              გსურთ #{selectedProductId} პროდუქტის წაშლა?
-            </h4>
+          <DeleteProductModal
+            title={`გსურთ #${selectedProductId} პროდუქტის წაშლა?`}
+          >
             <div className="modal-buttons-container">
               <Button
                 onClick={handleCloseModal}
@@ -270,7 +353,7 @@ export default function Products() {
               </Button>
             </div>
           </DeleteProductModal>
-          {isDeleting && (
+          {/* {isUpdating && (
             <div className="update-loading">
               <ThreeDots
                 visible={true}
@@ -281,7 +364,7 @@ export default function Products() {
                 wrapperClass="spinner"
               />
             </div>
-          )}
+          )} */}
         </div>
       )}
     </div>

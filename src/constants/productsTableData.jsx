@@ -249,11 +249,12 @@ export const generateDataSource = (
     ),
   }));
 };
-
+let count = 0;
 export const generateColumns = (
   allColumnNames,
   sortTableDataByKey
 ) => {
+  // console.log("Generate Columns is running...", ++count + " times");
   const columns = allColumnNames
     .filter((item) => item.isChecked)
     ?.map(({ key, title }) => {
