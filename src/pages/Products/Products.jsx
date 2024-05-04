@@ -20,7 +20,6 @@ import moment from "moment";
 import deleteProduct from "../../services/productServices/deleteProduct";
 import { useDispatch, useSelector } from "react-redux";
 import { authToken } from "../../redux/authSlice";
-import { ThreeDots } from "react-loader-spinner";
 import DeleteProductModal from "../../modals/deleteProductModal/DeleteProductModal";
 import { closeModal, openModal } from "../../redux/modalSlice";
 import Button from "../../components/Button/Button";
@@ -40,7 +39,7 @@ export default function Products() {
   const [cachedPages, setCachedPages] = useState(null);
   const dispatch = useDispatch();
 
-  const PAGE_LIMIT = 3;
+  const PAGE_LIMIT = 30;
 
   const handleOpenModal = (productID) => {
     setSelectedProductId(productID);
@@ -74,7 +73,7 @@ export default function Products() {
             ? Number(valueA) < Number(valueB)
               ? 1
               : -1
-            : valueA < valueB
+            : valueA.toLowerCase() < valueB.toLowerCase()
             ? 1
             : -1;
         });
@@ -99,7 +98,7 @@ export default function Products() {
             ? Number(valueA) < Number(valueB)
               ? -1
               : 1
-            : valueA < valueB
+            : valueA.toLowerCase() < valueB.toLowerCase()
             ? -1
             : 1;
         });
@@ -163,87 +162,15 @@ export default function Products() {
       } else {
         setIsLoading(true);
       }
-
-      const cachedData = cachedPages?.[page];
-      if (cachedData) {
-        setProductsData(cachedData);
-        setDataSource(
-          generateDataSource(
-            cachedData,
-            handleOpenModal,
-            handleUpdateProduct
-          )
-        );
-        setIsLoading(false);
-        setIsUpdating(false);
-        return;
-      }
-      const data = await getProducts(page, PAGE_LIMIT);
+      const data = await getProducts(page, PAGE_LIMIT, searchTerm);
       if (data && data.total && data.total !== productsTotalAmount) {
+        console.log(data);
         setProductsTotalAmount(data?.total);
       }
-      const products = data?.products
-        ?.map((p) => ({
-          image: p.images ? Object.values(p.images)[0] : "",
-          name: p.name,
-          category: p.categories ? Object.values(p.categories) : [],
-          genres: p.genres ? Object.values(p.genres) : [],
-          availability: p.available,
-          // Prices
-          priceV1: p.versions
-            ? (Object.values(p.versions).filter(
-                (v) =>
-                  v.version === "secondaryPricePS4" ||
-                  v.version === "secondaryPrice_PlayStation 4"
-              )?.[0]?.price || 0) + "₾"
-            : 0,
-          profitV1: p.versions
-            ? "+" +
-              (Object.values(p.versions).filter(
-                (v) =>
-                  v.version === "primaryPricePS4" ||
-                  v.version === "primaryPrice_PlayStation 4"
-              )?.[0]?.price || 0) +
-              "₾"
-            : 0,
-          priceV2: p.versions
-            ? (Object.values(p.versions).filter(
-                (v) =>
-                  v.version === "secondaryPricePS5" ||
-                  v.version === "secondaryPrice_PlayStation 5"
-              )?.[0]?.price || 0) + "₾"
-            : 0,
-          profitV2: p.versions
-            ? "+" +
-              (Object.values(p.versions).filter(
-                (v) =>
-                  v.version === "primaryPricePS5" ||
-                  v.version === "primaryPrice_PlayStation 5"
-              )?.[0]?.price || 0) +
-              "₾"
-            : 0,
-          discount: "-" + (p.discount || 0) + "₾",
-          subtitles: p.subtitles ? Object.values(p.subtitles) : [],
-          description: p.description,
-          voiceover: p.languages ? Object.values(p.languages) : [],
-          views: p.views,
-          tags: p.tags ? Object.values(p.tags) : [],
-          date: moment(p.created_at),
-          quantity: p.quantity,
-          sales: p.sold,
-          ID: "#" + p.product_id,
-          productID: p.product_id,
-        }))
-        ?.sort((a, b) =>
-          moment(a.created_at) > moment(b.created_at) ? 1 : -1
-        );
+      const products = data
+        ? generateProductObject(data.products)
+        : [];
       if (products) {
-        // Cache the fetched data
-        setCachedPages((prevCachedPages) => ({
-          ...prevCachedPages,
-          [page]: products,
-        }));
-
         setProductsData(products);
         setDataSource(
           generateDataSource(
@@ -259,35 +186,12 @@ export default function Products() {
       }, 1000);
     };
     fetchData();
-  }, [page, cachedPages]);
-
-  useEffect(() => {
-    const getData = setTimeout(() => {
-      setIsLoading(true);
-      if (productsData) {
-        const filteredData =
-          productsData?.filter((product) =>
-            product.name
-              .toLowerCase()
-              .includes(searchTerm.toLowerCase())
-          ) || [];
-        setDataSource(
-          generateDataSource(
-            filteredData,
-            handleOpenModal,
-            handleUpdateProduct
-          )
-        );
-      }
-      setIsLoading(false);
-    }, 300);
-    return () => clearTimeout(getData);
-  }, [searchTerm]);
+  }, [page, cachedPages, PAGE_LIMIT, searchTerm]);
 
   // Generate columns
   const columns = useMemo(
     () => generateColumns(menuItems, sortTableDataByKey),
-    [dataSource]
+    [dataSource, menuItems]
   );
   // Calculate amount of max pages
   const maxPages = useMemo(() => {
@@ -370,3 +274,60 @@ export default function Products() {
     </div>
   );
 }
+
+const generateProductObject = (products) =>
+  products
+    .map((p) => ({
+      image: p.images ? Object.values(p.images)[0] : "",
+      name: p.name,
+      category: p.categories ? Object.values(p.categories) : [],
+      genres: p.genres ? Object.values(p.genres) : [],
+      availability: p.available,
+      // Prices
+      priceV1: p.versions
+        ? (Object.values(p.versions).filter(
+            (v) =>
+              v.version === "secondaryPricePS4" ||
+              v.version === "secondaryPrice_PlayStation 4"
+          )?.[0]?.price || 0) + "₾"
+        : 0,
+      profitV1: p.versions
+        ? "+" +
+          (Object.values(p.versions).filter(
+            (v) =>
+              v.version === "primaryPricePS4" ||
+              v.version === "primaryPrice_PlayStation 4"
+          )?.[0]?.price || 0) +
+          "₾"
+        : 0,
+      priceV2: p.versions
+        ? (Object.values(p.versions).filter(
+            (v) =>
+              v.version === "secondaryPricePS5" ||
+              v.version === "secondaryPrice_PlayStation 5"
+          )?.[0]?.price || 0) + "₾"
+        : 0,
+      profitV2: p.versions
+        ? "+" +
+          (Object.values(p.versions).filter(
+            (v) =>
+              v.version === "primaryPricePS5" ||
+              v.version === "primaryPrice_PlayStation 5"
+          )?.[0]?.price || 0) +
+          "₾"
+        : 0,
+      discount: "-" + (p.discount || 0) + "₾",
+      subtitles: p.subtitles ? Object.values(p.subtitles) : [],
+      description: p.description,
+      voiceover: p.languages ? Object.values(p.languages) : [],
+      views: p.views,
+      tags: p.tags ? Object.values(p.tags) : [],
+      date: moment(p.created_at),
+      quantity: p.quantity,
+      sales: p.sold,
+      ID: "#" + p.product_id,
+      productID: p.product_id,
+    }))
+    ?.sort((a, b) =>
+      moment(a.created_at) > moment(b.created_at) ? 1 : -1
+    );

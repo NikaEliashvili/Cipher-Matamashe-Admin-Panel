@@ -46,7 +46,7 @@ const Table = ({
             : activePage + 2
         )
       : allPages;
-
+  console.log({ dataSource }, { loading });
   return (
     <div className="table-container-pagination">
       <div
@@ -110,7 +110,7 @@ const Table = ({
               ))}
           </tbody>
         </table>
-        {dataSource.length === 0 && !loading && (
+        {dataSource && dataSource?.length === 0 && !loading && (
           <div className="no-data">პროდუქტი ვერ მოიძებნა...</div>
         )}
         {loading && dataSource?.length === 0 && (
